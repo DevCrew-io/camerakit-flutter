@@ -11,7 +11,7 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version = await methodChannel.invokeMethod<String>('open_snap_camerakit');
     return version;
   }
 }
