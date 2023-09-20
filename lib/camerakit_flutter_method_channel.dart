@@ -10,8 +10,20 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   final methodChannel = const MethodChannel('camerakit_flutter');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('open_snap_camerakit');
+  Future<String?> openCameraKit() async {
+    final version =
+        await methodChannel.invokeMethod<String>('openSnapCameraKit');
     return version;
+  }
+
+  @override
+  setCameraKitCredentials(String appId, String GroupId, String token) {
+    methodChannel.invokeMethod<String>('setCameraKitCredentials');
+    final Map<String, dynamic> arguments = {
+      'appId': appId,
+      'groupId': GroupId,
+      'token': token
+    };
+    methodChannel.invokeMethod<String>('setCameraKitCredentials', arguments);
   }
 }

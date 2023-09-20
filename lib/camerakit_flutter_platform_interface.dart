@@ -23,7 +23,12 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
+  Future<String?> openCameraKit() {
     throw UnimplementedError('platformVersion() has not been implemented.');
+  }
+
+  setCameraKitCredentials(String appId, String GroupId, String token) {
+    throw UnimplementedError(
+        'setTwoCheckCredentials() has not been implemented.');
   }
 }

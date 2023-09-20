@@ -19,8 +19,14 @@ class CamerakitFlutterWeb extends CamerakitFlutterPlatform {
 
   /// Returns a [String] containing the version of the platform.
   @override
-  Future<String?> getPlatformVersion() async {
+  Future<String?> openCameraKit() async {
     final version = html.window.navigator.userAgent;
     return version;
+  }
+
+  @override
+  setCameraKitCredentials(String appId, String GroupId, String token) {
+    // TODO: implement setCameraKitCredentials
+    return super.setCameraKitCredentials(appId, GroupId, token);
   }
 }
