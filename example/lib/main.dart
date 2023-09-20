@@ -16,25 +16,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _camerakitFlutterPlugin = CamerakitFlutter();
+  String _callbackResponse = '';
+
+  static const cameraKitGroupId =
+      '853d69ca-aa0c-4c94-9049-9ccaeccc21eb'; //TODO fill group id here
+  static const cameraKitApiTokenStaging =
+      'eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjU5NTA4NDI1LCJzdWIiOiI5MTI0MjA0ZC1kNGQxLTQ1MmItODE3NS0wOWRhNWRhNWQ5ZTR-U1RBR0lOR35iZWU4M2ViNy01MDhjLTQwYjItYjc1NS1hMTVlODY0ZTU4ODYifQ.P_cEb6YD-0gKEzSG7LzklIW73gOKC_f_yJ8cF-SkXro'; //TODO fill api token here
+  static const cameraKitAppId = '9124204d-d4d1-452b-8175-09da5da5d9e4';
+
+  late final _cameraKitFlutterEventsImpl = CameraKitFlutterEventsImpl();
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    _cameraKitFlutterEventsImpl.setTwoCheckoutCredentials(
+        cameraKitAppId, cameraKitGroupId, cameraKitApiTokenStaging);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
+  Future<void> initCameraKit() async {
+    String callbackResponse;
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _camerakitFlutterPlugin.getPlatformVersion() ?? 'Unknown platform version';
+      callbackResponse = await _cameraKitFlutterEventsImpl.openCameraKit() ??
+          'Unknown platform version';
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      callbackResponse = 'Failed to open camerakit';
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -43,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion;
+      _callbackResponse = callbackResponse;
     });
   }
 
@@ -51,11 +59,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
+        appBar: AppBar(),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: ElevatedButton(onPressed: (){
+            initCameraKit();
+          }, child: const Text("Open CameraKit")),
         ),
       ),
     );
