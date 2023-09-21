@@ -18,6 +18,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import androidx.core.content.ContextCompat.startActivity
+import com.camerakit.camerakit_flutter.MethodChannels
 
 
 /** CamerakitFlutterPlugin */
@@ -33,21 +34,14 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
     /// when the Flutter Engine is detached from the Activity
+
     private lateinit var channel: MethodChannel
 
+    // Credentials for Camerakit
 
-    companion object {
-
-        // Method-channel names
-        const val OPEN_CAMERA_KIT = "openSnapCameraKit"
-        const val SET_CAMERA_KIT_CREDENTIALS = "setCameraKitCredentials"
-
-        //credentials for Camerakit
-
-        var APP_ID = ""
-        var GROUP_ID = ""
-        var CAMERA_KIT_API_TOKEN = ""
-    }
+    private  var appId = ""
+    private var groupId = ""
+    private var cameraKitApiToken = ""
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
@@ -57,21 +51,21 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            SET_CAMERA_KIT_CREDENTIALS -> {
-                Log.d("TAG", "onMethodCall: ${APP_ID}")
+            MethodChannels.SET_CAMERA_KIT_CREDENTIALS -> {
+                Log.d("TAG", "onMethodCall: $appId")
                 val arguments: Map<String, Any>? = call.arguments()
-                APP_ID = arguments?.get("appId") as String
-                GROUP_ID = arguments["groupId"] as String
-                CAMERA_KIT_API_TOKEN = arguments["token"] as String
+                appId = arguments?.get("appId") as String
+                groupId = arguments["groupId"] as String
+                cameraKitApiToken = arguments["token"] as String
             }
 
-            OPEN_CAMERA_KIT -> {
+            MethodChannels.OPEN_CAMERA_KIT -> {
                 activity.startActivityForResult(
                     CameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLenses(
-                            cameraKitApiToken = CAMERA_KIT_API_TOKEN,
-                            lensGroupIds = arrayOf(GROUP_ID),
-                                    cameraKitApplicationId = APP_ID
+                            cameraKitApiToken = cameraKitApiToken,
+                            lensGroupIds = arrayOf(groupId),
+                                    cameraKitApplicationId = appId
                         )
                     ), 200
                 )
