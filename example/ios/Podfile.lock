@@ -1,0 +1,40 @@
+PODS:
+  - camerakit_flutter (0.0.1):
+    - Flutter
+    - SCSDKCameraKit (~> 1.26.0)
+    - SCSDKCameraKitReferenceUI (~> 1.26.0)
+  - Flutter (1.0.0)
+  - integration_test (0.0.1):
+    - Flutter
+  - SCSDKCameraKit (1.26.0)
+  - SCSDKCameraKitReferenceUI (1.26.0):
+    - SCSDKCameraKit (~> 1.26.0)
+
+DEPENDENCIES:
+  - camerakit_flutter (from `.symlinks/plugins/camerakit_flutter/ios`)
+  - Flutter (from `Flutter`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
+
+SPEC REPOS:
+  trunk:
+    - SCSDKCameraKit
+    - SCSDKCameraKitReferenceUI
+
+EXTERNAL SOURCES:
+  camerakit_flutter:
+    :path: ".symlinks/plugins/camerakit_flutter/ios"
+  Flutter:
+    :path: Flutter
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
+
+SPEC CHECKSUMS:
+  camerakit_flutter: 19b7e96d9cbe378ad661ac45f634f62c3532591d
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  integration_test: 13825b8a9334a850581300559b8839134b124670
+  SCSDKCameraKit: a5b201bfd0afe5bafb1064fc518a8b6367687928
+  SCSDKCameraKitReferenceUI: 479be0a883cea4f0f5f6812b9085e4f49ac7bb42
+
+PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+
+COCOAPODS: 1.13.0

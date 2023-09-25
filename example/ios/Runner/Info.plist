@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>app need camera permission for showing camerakit lens</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>app need microphone permission for recording a video</string>
 </dict>
 </plist>
