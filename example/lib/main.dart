@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -18,17 +20,20 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// There will be interface that we will implement on [_MyAppState] class in the future,
   /// right now we have no method to show override any function
-
-  late final _cameraKitFlutterEventsImpl = CameraKitFlutterEventsImpl();
+late String _filePath = '';
+  late final _cameraKitFlutterEventsImpl =
+      CameraKitFlutterEventsImpl(cameraKitFlutterEvents: this);
 
   @override
   void initState() {
     super.initState();
     _cameraKitFlutterEventsImpl.setTwoCheckoutCredentials(
-        Constants.cameraKitAppId, Constants.cameraKitGroupId, Constants.cameraKitApiTokenStaging);
+        Constants.cameraKitAppId,
+        Constants.cameraKitGroupId,
+        Constants.cameraKitApiTokenStaging);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -48,14 +53,29 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: ElevatedButton(
-              onPressed: () {
-                initCameraKit();
-              },
-              child: const Text("Open CameraKit")),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  initCameraKit();
+                },
+                child: const Text("Open CameraKit")),
+            _filePath.isNotEmpty ? Image.file(File(_filePath)) :Container()
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void onCameraKitResult(String result) {
+    setState(() {
+      _filePath = result;
+    });
+
+    if (kDebugMode) {
+      print('Result received in flutter=>>>>>>>>>>>>>>>>>>>>>>>> $result');
+    }
   }
 }
