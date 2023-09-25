@@ -1,5 +1,5 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
+import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
 
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
@@ -21,6 +21,10 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
   static set instance(CamerakitFlutterPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
+  }
+
+  MethodChannel getMethodChannel() {
+    throw UnimplementedError('getMethodChannel() has not been implemented.');
   }
 
   Future<String?> openCameraKit() {

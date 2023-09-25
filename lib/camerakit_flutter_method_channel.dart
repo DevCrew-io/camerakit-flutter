@@ -10,6 +10,11 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   final methodChannel = const MethodChannel('camerakit_flutter');
 
   @override
+  MethodChannel getMethodChannel() {
+    return methodChannel;
+  }
+
+  @override
   Future<String?> openCameraKit() async {
     final version =
         await methodChannel.invokeMethod<String>('openSnapCameraKit');
