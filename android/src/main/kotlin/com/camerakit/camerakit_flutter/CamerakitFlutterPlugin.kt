@@ -45,6 +45,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
     private var groupId = ""
     private var cameraKitApiToken = ""
 
+    private val cameraKitRequestCode = 200;
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
         channel.setMethodCallHandler(this)
@@ -104,9 +105,9 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == cameraKitRequestCode && resultCode == Activity.RESULT_OK && data != null) {
             channel.invokeMethod("cameraKitResults", data.data?.toFile()?.absolutePath.toString());
-        } else if (requestCode == 200) {
+        } else {
             Log.d(TAG, "onActivityResult: No data received from the camera");
         }
         return false
