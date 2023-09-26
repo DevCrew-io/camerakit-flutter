@@ -8,7 +8,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 
-import 'configuration.dart';
 import 'constants.dart';
 
 void main() {
