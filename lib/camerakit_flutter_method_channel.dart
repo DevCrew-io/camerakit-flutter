@@ -1,7 +1,9 @@
+import 'package:camerakit_flutter/camerakit_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'camerakit_flutter_platform_interface.dart';
+import 'configuration_camerakit.dart';
 
 /// An implementation of [CamerakitFlutterPlatform] that uses method channels.
 class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
@@ -22,12 +24,12 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   }
 
   @override
-  setCameraKitCredentials(String appId, String GroupId, String token) {
+  setCameraKitCredentials(Configuration configuration) {
     methodChannel.invokeMethod<String>('setCameraKitCredentials');
     final Map<String, dynamic> arguments = {
-      'appId': appId,
-      'groupId': GroupId,
-      'token': token
+      'appId': configuration.appId,
+      'groupId': configuration.groupId,
+      'token': configuration.token
     };
     methodChannel.invokeMethod<String>('setCameraKitCredentials', arguments);
   }

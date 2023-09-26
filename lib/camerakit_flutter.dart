@@ -1,9 +1,11 @@
 import 'camerakit_flutter_platform_interface.dart';
 import 'package:flutter/services.dart';
 
-class CameraKitFlutterEventsImpl {
+import 'configuration_camerakit.dart';
+
+class CameraKitFlutterImpl {
   final CameraKitFlutterEvents cameraKitFlutterEvents;
-  CameraKitFlutterEventsImpl({required this.cameraKitFlutterEvents}) {
+  CameraKitFlutterImpl({required this.cameraKitFlutterEvents}) {
 
     CamerakitFlutterPlatform.instance.getMethodChannel().setMethodCallHandler((MethodCall call) async {
       switch (call.method) {
@@ -20,9 +22,9 @@ class CameraKitFlutterEventsImpl {
 
   /// Method to set Snap CameraKit credentials.
 
-  setTwoCheckoutCredentials(String appId, String GroupId, String token) {
+  setCredentials(Configuration configuration) {
     CamerakitFlutterPlatform.instance
-        .setCameraKitCredentials(appId, GroupId, token);
+        .setCameraKitCredentials(configuration);
   }
 }
 
@@ -31,3 +33,4 @@ class CameraKitFlutterEventsImpl {
 abstract class CameraKitFlutterEvents {
   void onCameraKitResult(String result);
 }
+
