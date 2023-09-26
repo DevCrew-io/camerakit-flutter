@@ -5,7 +5,7 @@ import SCSDKCameraKitReferenceUI
 
 public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "camerakit_flutter", binaryMessenger: registrar.messenger())
+        let channel = FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: registrar.messenger())
         let instance = CamerakitFlutterPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
@@ -25,17 +25,17 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
             cameraController.groupIDs = [Configuration.shared.groupId]
             let cameraViewController = FlutterCameraViewController(cameraController: cameraController)
             cameraViewController.modalPresentationStyle = .fullScreen
-            cameraViewController.onDismiss = {
+            cameraViewController.onDismiss = { [weak self] in
                 guard let lastPath = cameraViewController.url?.path,
                       let mimeType = cameraViewController.mimeType
                 else {
-                    print("Something went wrong received invalid url")
+                    print("Something went wrong, Received invalid url")
                     return
                 }
 
-                result([
-                    "path": lastPath,
-                    "type": mimeType
+                self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
+                    "path" : lastPath,
+                    "type" : mimeType
                 ])
             }
             
@@ -44,5 +44,13 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+    
+    private func getChannel() -> FlutterMethodChannel? {
+        guard let contoller = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController else {
+            return nil
+        }
+        
+        return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)
     }
 }

@@ -6,4 +6,5 @@ class Configuration {
     var apiToken = ""
     var groupId = ""
     var lensId = ""
+    var channelName = "camerakit_flutter"
 }

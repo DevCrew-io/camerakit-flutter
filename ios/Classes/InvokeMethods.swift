@@ -7,3 +7,6 @@ class InputMethods: InvokeMethods {
     static let SET_CAMERA_KIT_CREDENTIALS = "setCameraKitCredentials"
 }
 
+class OutputMethods: InvokeMethods {
+    static let CAMERA_KIT_RESULTS = "cameraKitResults"
+}
