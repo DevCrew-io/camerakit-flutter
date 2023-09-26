@@ -4,8 +4,10 @@ import androidx.annotation.NonNull
 import com.snap.camerakit.support.app.CameraActivity
 import android.content.Intent
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -18,11 +20,11 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toFile
 import com.camerakit.camerakit_flutter.MethodChannels
 
-
 /** CamerakitFlutterPlugin */
-class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
 
     private val CHANNEL = "camerakit_flutter"
     private lateinit var _result: MethodChannel.Result
@@ -43,6 +45,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private var groupId = ""
     private var cameraKitApiToken = ""
 
+    private val cameraKitRequestCode = 200;
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
         channel.setMethodCallHandler(this)
@@ -85,7 +88,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        // binding.addActivityResultListener(this);
+         binding.addActivityResultListener(this);
         activity = binding.activity
     }
 
@@ -99,5 +102,15 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivityForConfigChanges() {
         TODO("Not yet implemented")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+        if (requestCode == cameraKitRequestCode && resultCode == Activity.RESULT_OK && data != null) {
+            channel.invokeMethod("cameraKitResults", data.data?.toFile()?.absolutePath.toString());
+        } else {
+            Log.d(TAG, "onActivityResult: No data received from the camera");
+        }
+        return false
+
     }
 }

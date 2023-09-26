@@ -1,21 +1,36 @@
 import 'camerakit_flutter_platform_interface.dart';
+import 'package:flutter/services.dart';
 
-class CameraKitFlutterEventsImpl {
-  CameraKitFlutterEventsImpl() {}
+import 'configuration_camerakit.dart';
+
+class CameraKitFlutterImpl {
+  final CameraKitFlutterEvents cameraKitFlutterEvents;
+  CameraKitFlutterImpl({required this.cameraKitFlutterEvents}) {
+
+    CamerakitFlutterPlatform.instance.getMethodChannel().setMethodCallHandler((MethodCall call) async {
+      switch (call.method) {
+        case 'cameraKitResults':
+          cameraKitFlutterEvents.onCameraKitResult(call.arguments);
+      break;
+
+      }
+    });
+  }
   Future<String?> openCameraKit() {
     return CamerakitFlutterPlatform.instance.openCameraKit();
   }
 
   /// Method to set Snap CameraKit credentials.
 
-  setTwoCheckoutCredentials(String appId, String GroupId, String token) {
+  setCredentials(Configuration configuration) {
     CamerakitFlutterPlatform.instance
-        .setCameraKitCredentials(appId, GroupId, token);
+        .setCameraKitCredentials(configuration);
   }
 }
 
 /// Abstract class defining event callbacks related to TwoCheckout.
 
-abstract class TwoCheckoutFlutterEvents {
-  void onShowDialogue(String title, String detail);
+abstract class CameraKitFlutterEvents {
+  void onCameraKitResult(String result);
 }
+

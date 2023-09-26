@@ -4,6 +4,7 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html show window;
 
+import 'package:camerakit_flutter/configuration_camerakit.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'camerakit_flutter_platform_interface.dart';
@@ -25,8 +26,8 @@ class CamerakitFlutterWeb extends CamerakitFlutterPlatform {
   }
 
   @override
-  setCameraKitCredentials(String appId, String GroupId, String token) {
+  setCameraKitCredentials(Configuration configuration) {
     // TODO: implement setCameraKitCredentials
-    return super.setCameraKitCredentials(appId, GroupId, token);
+    return super.setCameraKitCredentials(configuration);
   }
 }

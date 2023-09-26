@@ -1,6 +1,8 @@
+import 'package:camerakit_flutter/camerakit_flutter.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
+import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
+import 'configuration_camerakit.dart';
 
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
   /// Constructs a CamerakitFlutterPlatform.
@@ -23,11 +25,15 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  MethodChannel getMethodChannel() {
+    throw UnimplementedError('getMethodChannel() has not been implemented.');
+  }
+
   Future<String?> openCameraKit() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
-  setCameraKitCredentials(String appId, String GroupId, String token) {
+  setCameraKitCredentials(Configuration configuration) {
     throw UnimplementedError(
         'setTwoCheckCredentials() has not been implemented.');
   }
