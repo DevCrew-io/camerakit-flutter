@@ -1,10 +1,18 @@
 import Foundation
 
-class Configuration {
+final class Configuration {
+    private init(appId: String = "", apiToken: String = "", groupIds: [String] = [], lensId: String = "", channelName: String = "camerakit_flutter") {
+        self.appId = appId
+        self.apiToken = apiToken
+        self.groupIds = groupIds
+        self.lensId = lensId
+        self.channelName = channelName
+    }
+    
     public static let shared = Configuration()
-    var appId = ""
-    var apiToken = ""
-    var groupId = ""
-    var lensId = ""
-    var channelName = "camerakit_flutter"
+    var appId: String
+    var apiToken: String
+    var groupIds: [String]
+    var lensId: String
+    var channelName: String
 }

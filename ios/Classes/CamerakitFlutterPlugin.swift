@@ -13,16 +13,16 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case InputMethods.SET_CAMERA_KIT_CREDENTIALS:
-            if let arguments = call.arguments as? [String : String] {
-                Configuration.shared.appId = arguments["appId"] ?? ""
-                Configuration.shared.groupId = arguments["groupId"] ?? ""
-                Configuration.shared.apiToken = arguments["token"] ?? ""
-                Configuration.shared.lensId = arguments["lensId"] ?? ""
+            if let arguments = call.arguments as? [String : Any] {
+                Configuration.shared.appId = arguments["appId"] as? String ?? ""
+                Configuration.shared.groupIds = arguments["groupIds"] as? [String] ?? []
+                Configuration.shared.apiToken = arguments["token"] as? String ?? ""
+                Configuration.shared.lensId = arguments["lensId"] as? String ?? ""
             }
         case InputMethods.OPEN_CAMERA_KIT:
             
             let cameraController = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
-            cameraController.groupIDs = [Configuration.shared.groupId]
+            cameraController.groupIDs = Configuration.shared.groupIds
             let cameraViewController = FlutterCameraViewController(cameraController: cameraController)
             cameraViewController.modalPresentationStyle = .fullScreen
             cameraViewController.onDismiss = { [weak self] in
