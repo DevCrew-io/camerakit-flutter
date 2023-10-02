@@ -25,13 +25,15 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// There will be interface that we will implement on [_MyAppState] class in the future,
   /// right now we have no method to show override any function
 late String _filePath = '';
+late String _fileType = '';
+
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
 
   @override
   void initState() {
     super.initState();
-     final config = Configuration(Constants.cameraKitAppId,Constants.cameraKitGroupId,Constants.cameraKitApiTokenStaging);
+     final config = Configuration(Constants.cameraKitAppId,[Constants.cameraKitGroupId, Constants.cameraKitGroupId2],Constants.cameraKitApiTokenStaging, Constants.cameraKitLensId);
     _cameraKitFlutterImpl.setCredentials(config);
   }
 
@@ -68,9 +70,10 @@ late String _filePath = '';
   }
 
   @override
-  void onCameraKitResult(String result) {
+  void onCameraKitResult(Map<dynamic,dynamic> result) {
     setState(() {
-      _filePath = result;
+      _filePath = result["path"] as String;
+      _fileType = result["type"] as String;
     });
 
     if (kDebugMode) {
