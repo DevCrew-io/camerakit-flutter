@@ -14,10 +14,7 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
         switch call.method {
         case InputMethods.SET_CAMERA_KIT_CREDENTIALS:
             if let arguments = call.arguments as? [String : Any] {
-                Configuration.shared.appId = arguments["appId"] as? String ?? ""
-                Configuration.shared.groupIds = arguments["groupIds"] as? [String] ?? []
-                Configuration.shared.apiToken = arguments["token"] as? String ?? ""
-                Configuration.shared.lensId = arguments["lensId"] as? String ?? ""
+                Configuration.shared.fromMap(arguments)
             }
         case InputMethods.OPEN_CAMERA_KIT:
             

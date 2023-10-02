@@ -33,7 +33,7 @@ late String _fileType = '';
   @override
   void initState() {
     super.initState();
-     final config = Configuration(Constants.cameraKitAppId,[Constants.cameraKitGroupId, Constants.cameraKitGroupId2],Constants.cameraKitApiTokenStaging, Constants.cameraKitLensId);
+     final config = Configuration(Constants.cameraKitAppId,[Constants.cameraKitGroupId, Constants.cameraKitGroupId2],Constants.cameraKitApiTokenStaging, Constants.cameraKitLensId,);
     _cameraKitFlutterImpl.setCredentials(config);
   }
 

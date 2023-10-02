@@ -15,4 +15,11 @@ final class Configuration {
     var groupIds: [String]
     var lensId: String
     var channelName: String
+    
+    func fromMap(_ arguments: [String: Any]) {
+        self.appId = arguments["appId"] as? String ?? ""
+        self.groupIds = arguments["groupIds"] as? [String] ?? []
+        self.apiToken = arguments["token"] as? String ?? ""
+        self.lensId = arguments["lensId"] as? String ?? ""
+    }
 }
