@@ -1,6 +1,8 @@
 class Configuration{
   final String appId;
-  final String groupId;
+  final List<String> groupIds;
   final String token;
-  Configuration(this.appId, this.groupId, this.token);
+  final String lensId;
+
+  Configuration(this.appId, this.groupIds, this.token, this.lensId);
 }
