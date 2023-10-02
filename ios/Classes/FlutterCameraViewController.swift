@@ -178,6 +178,27 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     // MARK: CameraControllerUIDelegate
 
     open func cameraController(_ controller: CameraController, updatedLenses lenses: [Lens]) {
+        if !Configuration.shared.lensId.isEmpty {
+            let result = lenses.filter({ $0.id == Configuration.shared.lensId })
+            guard result.count == 0 else {
+                if let lens: Lens = cameraController.cameraKit.lenses.repository.lens(
+                    id: result[0].id,
+                    groupID: result[0].groupId) {
+                    applyLens(lens)
+                }
+                
+                //2. Remove UI elements
+                cameraView.carouselView.isHidden = true
+                cameraView.carouselView.isUserInteractionEnabled = false
+                cameraView.cameraActionsView.isHidden = true
+                cameraView.cameraActionsView.isUserInteractionEnabled = false
+                cameraView.messageView.isHidden = true
+                return
+            }
+            
+            Configuration.shared.lensId = ""
+        }
+                
         cameraView.carouselView.reloadData()
         let selectedItem = cameraView.carouselView.selectedItem
 
@@ -331,6 +352,9 @@ extension FlutterCameraViewController {
     private func closeButtonPressed(_ sender: UIButton) {
         clearLens()
         cameraView.carouselView.selectItem(EmptyItem())
+        if !Configuration.shared.lensId.isEmpty {
+            self.dismiss(animated: true)
+        }
     }
 
     /// Opens Snapchat to the lens or profile specified

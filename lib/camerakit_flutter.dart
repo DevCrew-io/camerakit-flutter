@@ -31,6 +31,6 @@ class CameraKitFlutterImpl {
 /// Abstract class defining event callbacks related to TwoCheckout.
 
 abstract class CameraKitFlutterEvents {
-  void onCameraKitResult(String result);
+  void onCameraKitResult(Map<dynamic,dynamic> result);
 }
 
