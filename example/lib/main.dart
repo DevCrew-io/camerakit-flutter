@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
+import 'package:video_player/video_player.dart';
 
 import 'constants.dart';
 
@@ -24,16 +25,21 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// There will be interface that we will implement on [_MyAppState] class in the future,
   /// right now we have no method to show override any function
-late String _filePath = '';
-late String _fileType = '';
-
+  late String _filePath = '';
+  late String _fileType = '';
+  late VideoPlayerController _controller;
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
 
   @override
   void initState() {
     super.initState();
-     final config = Configuration(Constants.cameraKitAppId,[Constants.cameraKitGroupId, Constants.cameraKitGroupId2],Constants.cameraKitApiTokenStaging, Constants.cameraKitLensId,);
+    final config = Configuration(
+      Constants.cameraKitAppId,
+      [Constants.cameraKitGroupId, Constants.cameraKitGroupId2],
+      Constants.cameraKitApiTokenStaging,
+      Constants.cameraKitLensId,
+    );
     _cameraKitFlutterImpl.setCredentials(config);
   }
 
@@ -54,26 +60,70 @@ late String _fileType = '';
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Column(
+        floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  initCameraKit();
-                },
-                child: const Text("Open CameraKit")),
-            _filePath.isNotEmpty ? Image.file(File(_filePath)) :Container()
+            FloatingActionButton(
+              onPressed: () {
+                initCameraKit();
+              },
+              child: const Icon(Icons.camera),
+            ),
+            _filePath.isNotEmpty && _fileType == "video"
+                ? FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        _controller.value.isPlaying
+                            ? _controller.pause()
+                            : _controller.play();
+                      });
+                    },
+                    child: Icon(
+                      _controller.value.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow,
+                    ),
+                  )
+                : Container()
           ],
+        ),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+             /* SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+              ),*/
+              _filePath.isNotEmpty
+                  ? _fileType == 'video'
+                      ? AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      )
+                      : _fileType == 'image'
+                          ? Image.file(File(_filePath))
+                          : const Text("UnKnown File to show")
+                  : const Text("No Image/Video to Preview")
+            ],
+          ),
         ),
       ),
     );
   }
 
   @override
-  void onCameraKitResult(Map<dynamic,dynamic> result) {
+  void onCameraKitResult(Map<dynamic, dynamic> result) {
     setState(() {
       _filePath = result["path"] as String;
       _fileType = result["type"] as String;
+
+      _controller = VideoPlayerController.file(File(_filePath))
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+        });
     });
 
     if (kDebugMode) {
