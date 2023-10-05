@@ -49,34 +49,31 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             MethodChannels.SET_CAMERA_KIT_CREDENTIALS -> {
                 val arguments: Map<String, Any>? = call.arguments()
                 if (arguments != null) {
-                    Configuration.shared.fromMap(arguments)
+                    Configuration.createFromMap(arguments)
                 }
 
             }
 
             MethodChannels.OPEN_CAMERA_KIT -> {
-                if (Configuration.shared.lensId.isNotEmpty()) {
-                    activity.startActivityForResult(
-                        CameraActivity.Capture.createIntent(
-                            context, CameraActivity.Configuration.WithLens(
-                                cameraKitApiToken = Configuration.shared.cameraKitApiToken,
-                                lensId = Configuration.shared.lensId,
-                                lensGroupId = Configuration.shared.groupIds[0],
-                            )
-                        ), 200
+               val configuration = Configuration.getInstance()
+                val intent = if (configuration.lensId.isNotEmpty()) {
+                    CameraActivity.Capture.createIntent(
+                        context, CameraActivity.Configuration.WithLens(
+                            cameraKitApiToken = configuration.cameraKitApiToken,
+                            lensId = configuration.lensId,
+                            lensGroupId = configuration.groupIds[0],
+                        )
                     )
                 } else {
-                    activity.startActivityForResult(
-                        CameraActivity.Capture.createIntent(
-                            context, CameraActivity.Configuration.WithLenses(
-                                cameraKitApiToken = Configuration.shared.cameraKitApiToken,
-                                lensGroupIds = Configuration.shared.groupIds.toSet()
+                    CameraActivity.Capture.createIntent(
+                        context, CameraActivity.Configuration.WithLenses(
+                            cameraKitApiToken = configuration.cameraKitApiToken,
+                            lensGroupIds = configuration.groupIds.toSet()
 
-                            )
-                        ), 200
+                        )
                     )
                 }
-
+                activity.startActivityForResult(intent, 200)
             }
 
             else -> {
@@ -112,7 +109,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == cameraKitRequestCode && resultCode == Activity.RESULT_OK && data != null) {
             val type = data.data?.toFile()?.absolutePath?.let {
-                getFileType(it)
+                it.getFileType()
             }
             val theMap = mapOf(
                 "path" to data.data?.toFile()?.absolutePath,
