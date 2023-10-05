@@ -10,4 +10,5 @@
          app needs to declare the normal permission HIGH_SAMPLING_RATE_SENSORS.
          Ref: https://jis-eurasipjournals.springeropen.com/articles/10.1186/s13635-017-0061-8 -->
     <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <meta-data android:name="com.snap.camerakit.api.token" android:value="eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjU5NTA4NDI1LCJzdWIiOiI5MTI0MjA0ZC1kNGQxLTQ1MmItODE3NS0wOWRhNWRhNWQ5ZTR-U1RBR0lOR35iZWU4M2ViNy01MDhjLTQwYjItYjc1NS1hMTVlODY0ZTU4ODYifQ.P_cEb6YD-0gKEzSG7LzklIW73gOKC_f_yJ8cF-SkXro" />
 </manifest>

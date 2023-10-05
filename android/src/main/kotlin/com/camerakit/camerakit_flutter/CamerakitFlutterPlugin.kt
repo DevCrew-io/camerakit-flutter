@@ -7,9 +7,6 @@ import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodCall
@@ -18,13 +15,14 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
-import io.flutter.plugin.common.PluginRegistry.Registrar
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toFile
 import com.camerakit.camerakit_flutter.MethodChannels
+import getFileType
+import java.util.Locale
 
 /** CamerakitFlutterPlugin */
-class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
+    PluginRegistry.ActivityResultListener {
 
     private val CHANNEL = "camerakit_flutter"
     private lateinit var _result: MethodChannel.Result
@@ -39,12 +37,6 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
 
     private lateinit var channel: MethodChannel
 
-    // Credentials for Camerakit
-
-    private  var appId = ""
-    private var groupId = ""
-    private var cameraKitApiToken = ""
-
     private val cameraKitRequestCode = 200;
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
@@ -55,23 +47,33 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             MethodChannels.SET_CAMERA_KIT_CREDENTIALS -> {
-                Log.d("TAG", "onMethodCall: $appId")
                 val arguments: Map<String, Any>? = call.arguments()
-                appId = arguments?.get("appId") as String
-                groupId = arguments["groupId"] as String
-                cameraKitApiToken = arguments["token"] as String
+                if (arguments != null) {
+                    Configuration.createFromMap(arguments)
+                }
+
             }
 
             MethodChannels.OPEN_CAMERA_KIT -> {
-                activity.startActivityForResult(
+               val configuration = Configuration.getInstance()
+                val intent = if (configuration.lensId.isNotEmpty()) {
+                    CameraActivity.Capture.createIntent(
+                        context, CameraActivity.Configuration.WithLens(
+                            cameraKitApiToken = configuration.cameraKitApiToken,
+                            lensId = configuration.lensId,
+                            lensGroupId = configuration.groupIds[0],
+                        )
+                    )
+                } else {
                     CameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLenses(
-                            cameraKitApiToken = cameraKitApiToken,
-                            lensGroupIds = arrayOf(groupId),
-                                    cameraKitApplicationId = appId
+                            cameraKitApiToken = configuration.cameraKitApiToken,
+                            lensGroupIds = configuration.groupIds.toSet()
+
                         )
-                    ), 200
-                )
+                    )
+                }
+                activity.startActivityForResult(intent, 200)
             }
 
             else -> {
@@ -88,7 +90,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
 
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-         binding.addActivityResultListener(this);
+        binding.addActivityResultListener(this);
         activity = binding.activity
     }
 
@@ -106,7 +108,15 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (requestCode == cameraKitRequestCode && resultCode == Activity.RESULT_OK && data != null) {
-            channel.invokeMethod("cameraKitResults", data.data?.toFile()?.absolutePath.toString());
+            val type = data.data?.toFile()?.absolutePath?.let {
+                it.getFileType()
+            }
+            val theMap = mapOf(
+                "path" to data.data?.toFile()?.absolutePath,
+                "type" to type
+            )
+
+            channel.invokeMethod("cameraKitResults", theMap);
         } else {
             Log.d(TAG, "onActivityResult: No data received from the camera");
         }
