@@ -16,9 +16,19 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
 import androidx.core.net.toFile
+import androidx.lifecycle.LifecycleOwner
 import com.camerakit.camerakit_flutter.MethodChannels
+import com.google.gson.Gson
+import com.snap.camerakit.Session
+import com.snap.camerakit.lenses.LensesComponent
+import com.snap.camerakit.lenses.whenHasSome
+import com.snap.camerakit.invoke
+import com.snap.camerakit.support.camerax.CameraXImageProcessorSource
 import getFileType
+import java.io.Closeable
 import java.util.Locale
+import java.util.concurrent.Executors
+import kotlin.math.log
 
 /** CamerakitFlutterPlugin */
 class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
@@ -29,7 +39,9 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     private lateinit var _methodChannel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
-
+    private lateinit var cameraKitSession: Session
+    private lateinit var imageProcessorSource: CameraXImageProcessorSource
+    private var lensRepositorySubscription: Closeable? = null
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -42,6 +54,8 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
+
+
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -55,7 +69,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             }
 
             MethodChannels.OPEN_CAMERA_KIT -> {
-               val configuration = Configuration.getInstance()
+                val configuration = Configuration.getInstance()
                 val intent = if (configuration.lensId.isNotEmpty()) {
                     CameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLens(
@@ -74,6 +88,25 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                     )
                 }
                 activity.startActivityForResult(intent, 200)
+            }
+
+            MethodChannels.GET_GROUP_LENSES -> {
+                cameraKitSession = Session(activity) {
+                    apiToken(Configuration.getInstance().cameraKitApiToken)
+                }
+                lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
+                    LensesComponent.Repository.QueryCriteria.Available(setOf(Configuration.getInstance().groupIds[0]))
+                ) { resultLenses ->
+                    resultLenses.whenHasSome { lenses ->
+                        val serializedDataList =
+                            lenses.map { mapOf("id" to it.id, "name" to it.name) }
+                        val gson = Gson()
+                        // Convert the ArrayList to a JSON string
+                        val jsonString = gson.toJson(serializedDataList)
+
+                        result.success(jsonString);
+                    }
+                }
             }
 
             else -> {
