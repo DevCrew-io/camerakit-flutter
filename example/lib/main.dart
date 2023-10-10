@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camerakit_flutter/configuration_camerakit.dart';
+import 'package:camerakit_flutter_example/lens_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -8,11 +10,12 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 import 'package:video_player/video_player.dart';
+import 'package:camerakit_flutter/lens_model.dart';
 
 import 'constants.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(home: MyApp(),));
 }
 
 class MyApp extends StatefulWidget {
@@ -28,6 +31,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   late String _filePath = '';
   late String _fileType = '';
   late VideoPlayerController _controller;
+  late List<LensModel> lensList = [];
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
 
@@ -56,14 +60,37 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     }
   }
 
+  // Platform messages are asynchronous, so we initialize in an async method.
+  getGroupLenses() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      lensList = await _cameraKitFlutterImpl.getGroupLenses();
+      if (!mounted) return;
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LensListWidget(lensList: lensList)));
+
+
+    } on PlatformException {
+      if (kDebugMode) {
+        print("Failed to open camera kit");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            FloatingActionButton(
+              onPressed: () {
+                getGroupLenses();
+              },
+              child: const Icon(Icons.list),
+            ),
             FloatingActionButton(
               onPressed: () {
                 initCameraKit();
@@ -92,16 +119,16 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             /* SizedBox(
+              /* SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 50,
               ),*/
               _filePath.isNotEmpty
                   ? _fileType == 'video'
                       ? AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
-                      )
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: VideoPlayer(_controller),
+                        )
                       : _fileType == 'image'
                           ? Image.file(File(_filePath))
                           : const Text("UnKnown File to show")
@@ -109,8 +136,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   @override
