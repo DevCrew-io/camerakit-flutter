@@ -1,3 +1,5 @@
+import 'package:camerakit_flutter/lens_model.dart';
+
 import 'camerakit_flutter_platform_interface.dart';
 import 'package:flutter/services.dart';
 
@@ -26,6 +28,13 @@ class CameraKitFlutterImpl {
     CamerakitFlutterPlatform.instance
         .setCameraKitCredentials(configuration);
   }
+
+  /// Get Group Lenses from CameraKit
+
+  Future<List<LensModel>> getGroupLenses(){
+   return CamerakitFlutterPlatform.instance.getGroupLenses();
+  }
+
 }
 
 /// Abstract class defining event callbacks related to TwoCheckout.

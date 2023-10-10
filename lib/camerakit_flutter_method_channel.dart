@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:camerakit_flutter/camerakit_flutter.dart';
+import 'package:camerakit_flutter/lens_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -32,5 +35,12 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
       'lensId': configuration.lensId
     };
     methodChannel.invokeMethod<String>('setCameraKitCredentials', arguments);
+  }
+ @override
+  Future<List<LensModel>> getGroupLenses() async{
+   var jsonString = await methodChannel.invokeMethod<String>('getGroupLenses');
+   final List<dynamic> lensList = json.decode(jsonString!);
+   final List<LensModel> lensModel = lensList.map((item) => LensModel.fromJson(item)).toList();
+  return lensModel;
   }
 }
