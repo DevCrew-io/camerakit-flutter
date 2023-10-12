@@ -6,3 +6,9 @@ object MethodChannels{
     const val GET_GROUP_LENSES = "getGroupLenses"
 
 }
+
+object InvokeMethods{
+    const val showLensList = "showLensList"
+    const val cameraKitResults = "cameraKitResults"
+
+}
