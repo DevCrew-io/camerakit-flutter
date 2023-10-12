@@ -30,8 +30,6 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
 
     private val CHANNEL = "camerakit_flutter"
-    private lateinit var _result: MethodChannel.Result
-    private lateinit var _methodChannel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
     private lateinit var cameraKitSession: Session
