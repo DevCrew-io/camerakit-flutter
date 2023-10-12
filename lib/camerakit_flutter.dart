@@ -1,3 +1,5 @@
+import 'package:camerakit_flutter/lens_model.dart';
+
 import 'camerakit_flutter_platform_interface.dart';
 import 'package:flutter/services.dart';
 
@@ -12,6 +14,9 @@ class CameraKitFlutterImpl {
         case 'cameraKitResults':
           cameraKitFlutterEvents.onCameraKitResult(call.arguments);
       break;
+        case 'receiveLenses':
+          cameraKitFlutterEvents.receiveLenses(call.arguments);
+          break;
 
       }
     });
@@ -26,11 +31,19 @@ class CameraKitFlutterImpl {
     CamerakitFlutterPlatform.instance
         .setCameraKitCredentials(configuration);
   }
+
+  Future<void> getGroupLenses(){
+    return CamerakitFlutterPlatform.instance.getGroupLenses();
+  }
+
 }
 
-/// Abstract class defining event callbacks related to TwoCheckout.
+/// Abstract class defining event callbacks related to CameraKit.
 
 abstract class CameraKitFlutterEvents {
-  void onCameraKitResult(Map<dynamic,dynamic> result);
-}
 
+  void onCameraKitResult(Map<dynamic,dynamic> result);
+
+  void receiveLenses(String jsonString);
+
+}

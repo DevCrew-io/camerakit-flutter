@@ -3,6 +3,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
 import 'configuration_camerakit.dart';
+import 'lens_model.dart';
 
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
   /// Constructs a CamerakitFlutterPlatform.
@@ -36,5 +37,9 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
   setCameraKitCredentials(Configuration configuration) {
     throw UnimplementedError(
         'setTwoCheckCredentials() has not been implemented.');
+  }
+
+  Future<void> getGroupLenses() {
+    throw UnimplementedError('getGroupLenses has not been implemented.');
   }
 }

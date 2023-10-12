@@ -16,9 +16,14 @@ import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.PluginRegistry
 import androidx.core.net.toFile
-import com.camerakit.camerakit_flutter.MethodChannels
+import com.google.gson.Gson
+import com.snap.camerakit.Session
+import com.snap.camerakit.lenses.LensesComponent
+import com.snap.camerakit.lenses.whenHasSome
+import com.snap.camerakit.invoke
+import com.snap.camerakit.support.camerax.CameraXImageProcessorSource
 import getFileType
-import java.util.Locale
+import java.io.Closeable
 
 /** CamerakitFlutterPlugin */
 class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
@@ -29,7 +34,9 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     private lateinit var _methodChannel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
-
+    private lateinit var cameraKitSession: Session
+    private lateinit var imageProcessorSource: CameraXImageProcessorSource
+    private var lensRepositorySubscription: Closeable? = null
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -42,21 +49,29 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
+
+
     }
 
+    /// onMethodCall function handles incoming method calls from Dart and performs actions accordingly.
+    /// The 'call' parameter contains information about the method called, and 'result' is used to send back the result.
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             MethodChannels.SET_CAMERA_KIT_CREDENTIALS -> {
+                // Handle setting Camera Kit credentials.
                 val arguments: Map<String, Any>? = call.arguments()
                 if (arguments != null) {
+                    // Create a Configuration object from the provided arguments.
                     Configuration.createFromMap(arguments)
                 }
 
             }
 
             MethodChannels.OPEN_CAMERA_KIT -> {
-               val configuration = Configuration.getInstance()
+                // Handle opening Camera Kit.
+                val configuration = Configuration.getInstance()
                 val intent = if (configuration.lensId.isNotEmpty()) {
+                    // Create an intent for capturing with a specific lens.
                     CameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLens(
                             cameraKitApiToken = configuration.cameraKitApiToken,
@@ -65,6 +80,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                         )
                     )
                 } else {
+                    // Create an intent for capturing with multiple lenses.
                     CameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLenses(
                             cameraKitApiToken = configuration.cameraKitApiToken,
@@ -73,10 +89,54 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                         )
                     )
                 }
+                // Start the Camera Activity for result.
                 activity.startActivityForResult(intent, 200)
             }
 
+            MethodChannels.GET_GROUP_LENSES -> {
+                // Handle getting group lenses.
+                cameraKitSession = Session(activity) {
+                    apiToken(Configuration.getInstance().cameraKitApiToken)
+                }
+                lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
+                    LensesComponent.Repository.QueryCriteria.Available(setOf(Configuration.getInstance().groupIds[0]))
+                ) { resultLenses ->
+                    resultLenses.whenHasSome { lenses ->
+                        // Convert the lens data to a serialized list.
+                        try {
+                            val serializedDataList =
+                                lenses.map {
+                                    mapOf(
+                                        "id" to it.id,
+                                        "name" to it.name,
+                                        "facePreference" to it.facingPreference?.name,
+                                        "groupId" to it.groupId,
+                                        "snapcodes" to it.snapcodes.map { snapCode -> snapCode.uri },
+                                        "vendorData" to it.vendorData,
+                                        "previews" to it.previews.map { prev -> prev.uri },
+                                        "thumbnail" to it.icons.map { icon -> icon.uri }
+                                    )
+                                }
+                            val gson = Gson()
+                            // Convert the ArrayList to a JSON string
+                            val jsonString = gson.toJson(serializedDataList)
+                            // invokeMethod run only on ui thread
+                            activity.runOnUiThread {
+                                channel.invokeMethod(
+                                    InvokeMethods.receiveLenses,
+                                    jsonString
+                                );
+                            }
+                        } catch (e: Exception) {
+                            Log.d(TAG, "sendLensListToFlutter: $e")
+                        }
+
+                    }
+                }
+            }
+
             else -> {
+                // Handle other, unimplemented method calls.
                 result.notImplemented()
             }
         }
@@ -116,7 +176,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 "type" to type
             )
 
-            channel.invokeMethod("cameraKitResults", theMap);
+            channel.invokeMethod(InvokeMethods.cameraKitResults, theMap);
         } else {
             Log.d(TAG, "onActivityResult: No data received from the camera");
         }

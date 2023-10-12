@@ -1,18 +1,21 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:camerakit_flutter/configuration_camerakit.dart';
+import 'package:camerakit_flutter_example/media_result_screen.dart';
+import 'package:camerakit_flutter_example/lens_list_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
-import 'package:video_player/video_player.dart';
+import 'package:camerakit_flutter/lens_model.dart';
 
 import 'constants.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -27,16 +30,17 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// right now we have no method to show override any function
   late String _filePath = '';
   late String _fileType = '';
-  late VideoPlayerController _controller;
+  late List<Lens> lensList = [];
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
+  bool isLensListPressed = false;
 
   @override
   void initState() {
     super.initState();
     final config = Configuration(
       Constants.cameraKitAppId,
-      [Constants.cameraKitGroupId, Constants.cameraKitGroupId2],
+      Constants.groupIdList,
       Constants.cameraKitApiTokenStaging,
       Constants.cameraKitLensId,
     );
@@ -56,58 +60,44 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     }
   }
 
+  // Platform messages are asynchronous, so we initialize in an async method.
+  getGroupLenses() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      _cameraKitFlutterImpl.getGroupLenses();
+    } on PlatformException {
+      if (kDebugMode) {
+        print("Failed to open camera kit");
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        floatingActionButton: Row(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Camera Kit'),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                initCameraKit();
-              },
-              child: const Icon(Icons.camera),
-            ),
-            _filePath.isNotEmpty && _fileType == "video"
-                ? FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
-                      });
-                    },
-                    child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                    ),
-                  )
-                : Container()
+            ElevatedButton(
+                onPressed: () {
+                  isLensListPressed = true;
+                  setState(() {});
+                  getGroupLenses();
+                },
+                child: const Text("Show Lens List")),
+            ElevatedButton(
+                onPressed: () {
+                  initCameraKit();
+                },
+                child: const Text("Open CameraKit")),
+            isLensListPressed ? const CircularProgressIndicator() : Container()
           ],
-        ),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-             /* SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-              ),*/
-              _filePath.isNotEmpty
-                  ? _fileType == 'video'
-                      ? AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
-                      )
-                      : _fileType == 'image'
-                          ? Image.file(File(_filePath))
-                          : const Text("UnKnown File to show")
-                  : const Text("No Image/Video to Preview")
-            ],
-          ),
         ),
       ),
     );
@@ -119,15 +109,28 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
       _filePath = result["path"] as String;
       _fileType = result["type"] as String;
 
-      _controller = VideoPlayerController.file(File(_filePath))
-        ..initialize().then((_) {
-          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-          setState(() {});
-        });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MediaResultWidget(
+                filePath: _filePath,
+                fileType: _fileType,
+              )));
     });
+  }
 
-    if (kDebugMode) {
-      print('Result received in flutter=>>>>>>>>>>>>>>>>>>>>>>>> $result');
+  @override
+  void receiveLenses(String jsonString) async {
+    isLensListPressed = false;
+    setState(() {});
+    try {
+      final List<dynamic> list = json.decode(jsonString);
+      final List<Lens> lensList =
+          list.map((item) => Lens.fromJson(item)).toList();
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LensListView(lensList: lensList)));
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 }
