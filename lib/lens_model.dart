@@ -1,4 +1,4 @@
-class LensModel {
+class Lens {
   String? id;
   String? name;
   String? facePreference;
@@ -7,7 +7,7 @@ class LensModel {
   List<String>? previews;
   List<String>? thumbnail;
 
-  LensModel(
+  Lens(
       {this.id,
       this.name,
       this.facePreference,
@@ -16,28 +16,13 @@ class LensModel {
       this.previews,
       this.thumbnail});
 
-  LensModel.fromJson(Map<String, dynamic> json) {
+  Lens.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     facePreference = json['facePreference'];
     groupId = json['groupId'];
-    if (json['snapcodes'] != null) {
-      snapCodes = <String>[];
-      json['snapcodes'].forEach((v) {
-        snapCodes!.add(v as String);
-      });
-    }
-    if (json['previews'] != null) {
-      previews = <String>[];
-      json['previews'].forEach((v) {
-        previews!.add(v as String);
-      });
-    }
-    if (json['thumbnail'] != null) {
-      thumbnail = <String>[];
-      json['thumbnail'].forEach((v) {
-        thumbnail!.add(v as String);
-      });
-    }
+    snapCodes = json['snapcodes'].cast<String>();
+    previews = json['previews'].cast<String>();
+    thumbnail = json['thumbnail'].cast<String>();
   }
 }

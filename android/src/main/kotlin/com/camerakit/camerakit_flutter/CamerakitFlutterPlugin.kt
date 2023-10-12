@@ -111,10 +111,10 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                                         "name" to it.name,
                                         "facePreference" to it.facingPreference?.name,
                                         "groupId" to it.groupId,
-                                        "snapcodes" to it.snapcodes.map { it -> it.uri },
+                                        "snapcodes" to it.snapcodes.map { snapCode -> snapCode.uri },
                                         "vendorData" to it.vendorData,
-                                        "previews" to it.previews.map { it -> it.uri },
-                                        "thumbnail" to it.icons.map { it -> it.uri }
+                                        "previews" to it.previews.map { prev -> prev.uri },
+                                        "thumbnail" to it.icons.map { icon -> icon.uri }
                                     )
                                 }
                             val gson = Gson()
@@ -123,7 +123,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                             // invokeMethod run only on ui thread
                             activity.runOnUiThread {
                                 channel.invokeMethod(
-                                    InvokeMethods.showLensList,
+                                    InvokeMethods.receiveLenses,
                                     jsonString
                                 );
                             }

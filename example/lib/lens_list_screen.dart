@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// A widget for displaying a list of lenses.
 
 class LensListView extends StatefulWidget {
-  final List<LensModel> lensList;
+  final List<Lens> lensList;
 
   const LensListView({super.key, required this.lensList});
 

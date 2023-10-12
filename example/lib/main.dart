@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// right now we have no method to show override any function
   late String _filePath = '';
   late String _fileType = '';
-  late List<LensModel> lensList = [];
+  late List<Lens> lensList = [];
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
   bool isLensListPressed = false;
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     super.initState();
     final config = Configuration(
       Constants.cameraKitAppId,
-      [Constants.cameraKitGroupId, Constants.cameraKitGroupId2],
+      Constants.groupIdList,
       Constants.cameraKitApiTokenStaging,
       Constants.cameraKitLensId,
     );
@@ -65,13 +65,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      lensList = await _cameraKitFlutterImpl.getGroupLenses();
-
-      if (!mounted) return;
-      await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LensListView(lensList: lensList)));
-      isLensListPressed = false;
-      setState(() {});
+      _cameraKitFlutterImpl.getGroupLenses();
     } on PlatformException {
       if (kDebugMode) {
         print("Failed to open camera kit");
@@ -122,22 +116,21 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
               )));
     });
   }
+
   @override
-  void showLensList(String jsonString) async{
+  void receiveLenses(String jsonString) async {
     isLensListPressed = false;
-
-
-    try{
+    setState(() {});
+    try {
       final List<dynamic> list = json.decode(jsonString);
-      final List<LensModel> lensList = list.map((item) => LensModel.fromJson(item)).toList();
+      final List<Lens> lensList =
+          list.map((item) => Lens.fromJson(item)).toList();
       await Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => LensListView(lensList: lensList)));
-    }catch(e){
+    } catch (e) {
       if (kDebugMode) {
         print(e.toString());
       }
     }
-
-
   }
 }

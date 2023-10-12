@@ -36,11 +36,9 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
     };
     methodChannel.invokeMethod<String>('setCameraKitCredentials', arguments);
   }
- @override
-  Future<List<LensModel>> getGroupLenses() async{
-   var jsonString = await methodChannel.invokeMethod<String>('getGroupLenses');
-   final List<dynamic> lensList = json.decode(jsonString!);
-   final List<LensModel> lensModel = lensList.map((item) => LensModel.fromJson(item)).toList();
-  return lensModel;
+
+  @override
+  Future<void> getGroupLenses() async {
+    await methodChannel.invokeMethod<String>('getGroupLenses');
   }
 }

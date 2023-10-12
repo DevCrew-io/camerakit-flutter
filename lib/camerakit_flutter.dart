@@ -14,8 +14,8 @@ class CameraKitFlutterImpl {
         case 'cameraKitResults':
           cameraKitFlutterEvents.onCameraKitResult(call.arguments);
       break;
-        case 'showLensList':
-          cameraKitFlutterEvents.showLensList(call.arguments);
+        case 'receiveLenses':
+          cameraKitFlutterEvents.receiveLenses(call.arguments);
           break;
 
       }
@@ -32,10 +32,8 @@ class CameraKitFlutterImpl {
         .setCameraKitCredentials(configuration);
   }
 
-  /// Get Group Lenses from CameraKit
-
-  Future<List<LensModel>> getGroupLenses(){
-   return CamerakitFlutterPlatform.instance.getGroupLenses();
+  Future<void> getGroupLenses(){
+    return CamerakitFlutterPlatform.instance.getGroupLenses();
   }
 
 }
@@ -46,6 +44,6 @@ abstract class CameraKitFlutterEvents {
 
   void onCameraKitResult(Map<dynamic,dynamic> result);
 
-  void showLensList(String jsonString);
+  void receiveLenses(String jsonString);
 
 }

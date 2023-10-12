@@ -8,7 +8,7 @@ object MethodChannels{
 }
 
 object InvokeMethods{
-    const val showLensList = "showLensList"
+    const val receiveLenses = "receiveLenses"
     const val cameraKitResults = "cameraKitResults"
 
 }

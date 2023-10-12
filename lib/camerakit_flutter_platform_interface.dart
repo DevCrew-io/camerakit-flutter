@@ -39,7 +39,7 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
         'setTwoCheckCredentials() has not been implemented.');
   }
 
-  Future<List<LensModel>> getGroupLenses() {
+  Future<void> getGroupLenses() {
     throw UnimplementedError('getGroupLenses has not been implemented.');
   }
 }

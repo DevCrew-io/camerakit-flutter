@@ -1,18 +1,14 @@
 /// A class containing constants and configuration settings for the Camera Kit.
 
-class Constants{
+class Constants {
 
-  /// The group ID for Camera Kit (TODO: Fill group ID here).
+  /// List of group IDs for Camera Kit (TODO: Fill group ID here).
 
-  static const cameraKitGroupId = '853d69ca-aa0c-4c94-9049-9ccaeccc21eb';
-
-  /// Another group ID for Camera Kit (TODO: Fill group ID here).
-
-  static const cameraKitGroupId2 = '696fc2b6-88b3-4d4f-9d31-295640a8d203';
+  static const List<String> groupIdList = ['853d69ca-aa0c-4c94-9049-9ccaeccc21eb', '696fc2b6-88b3-4d4f-9d31-295640a8d203'];
 
   /// The lens ID for Camera Kit (TODO: Fill lens ID here).
 
-  static const cameraKitLensId = '';//'43276930875';
+  static const cameraKitLensId = ''; //'43276930875';
 
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
 
