@@ -122,7 +122,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                             // invokeMethod run only on ui thread
                             activity.runOnUiThread {
                                 channel.invokeMethod(
-                                    InvokeMethods.receiveLenses,
+                                    InvokeMethods.receivedLenses,
                                     jsonString
                                 );
                             }

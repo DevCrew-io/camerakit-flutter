@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   }
 
   @override
-  void receiveLenses(List<Lens> lensList) async {
+  void receivedLenses(List<Lens> lensList) async {
     isLensListPressed = false;
     setState(() {});
     await Navigator.of(context).push(MaterialPageRoute(
