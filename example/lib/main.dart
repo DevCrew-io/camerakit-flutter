@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:camerakit_flutter/configuration_camerakit.dart';
 import 'package:camerakit_flutter_example/media_result_screen.dart';
 import 'package:camerakit_flutter_example/lens_list_screen.dart';
@@ -9,7 +7,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 import 'package:camerakit_flutter/lens_model.dart';
-
 import 'constants.dart';
 
 void main() {
@@ -118,19 +115,10 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   }
 
   @override
-  void receiveLenses(String jsonString) async {
+  void receiveLenses(List<Lens> lensList) async {
     isLensListPressed = false;
     setState(() {});
-    try {
-      final List<dynamic> list = json.decode(jsonString);
-      final List<Lens> lensList =
-          list.map((item) => Lens.fromJson(item)).toList();
-      await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LensListView(lensList: lensList)));
-    } catch (e) {
-      if (kDebugMode) {
-        print(e.toString());
-      }
-    }
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => LensListView(lensList: lensList)));
   }
 }

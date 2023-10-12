@@ -21,6 +21,7 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
 
   @override
   Future<String?> openCameraKit() async {
+    // Invoke the native method to open the CameraKit and return a version string.
     final version =
         await methodChannel.invokeMethod<String>('openSnapCameraKit');
     return version;
@@ -28,6 +29,7 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
 
   @override
   setCameraKitCredentials(Configuration configuration) {
+    // Prepare a map with the necessary credentials and invoke the native method to set CameraKit credentials.
     final Map<String, dynamic> arguments = {
       'appId': configuration.appId,
       'groupIds': configuration.groupIds,
@@ -39,6 +41,7 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
 
   @override
   Future<void> getGroupLenses() async {
+    // Invoke the native method to retrieve group lenses from the CameraKit.
     await methodChannel.invokeMethod<String>('getGroupLenses');
   }
 }
