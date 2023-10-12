@@ -94,12 +94,13 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             }
 
             MethodChannels.GET_GROUP_LENSES -> {
+                var groupIds: List<String> = call.arguments()!!
                 // Handle getting group lenses.
                 cameraKitSession = Session(activity) {
                     apiToken(Configuration.getInstance().cameraKitApiToken)
                 }
                 lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
-                    LensesComponent.Repository.QueryCriteria.Available(setOf(Configuration.getInstance().groupIds[0]))
+                    LensesComponent.Repository.QueryCriteria.Available(groupIds.toSet())
                 ) { resultLenses ->
                     resultLenses.whenHasSome { lenses ->
                         // Convert the lens data to a serialized list.

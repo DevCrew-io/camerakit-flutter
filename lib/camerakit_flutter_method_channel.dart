@@ -40,8 +40,8 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   }
 
   @override
-  Future<void> getGroupLenses() async {
+  Future<void> getGroupLenses(List<String> groupIds) async {
     // Invoke the native method to retrieve group lenses from the CameraKit.
-    await methodChannel.invokeMethod<String>('getGroupLenses');
+    await methodChannel.invokeMethod('getGroupLenses',groupIds);
   }
 }

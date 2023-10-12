@@ -46,8 +46,8 @@ class CameraKitFlutterImpl {
   }
 
   /// Asynchronously retrieves group lenses from the CameraKit.
-  Future<void> getGroupLenses() {
-    return CamerakitFlutterPlatform.instance.getGroupLenses();
+  Future<void> getGroupLenses(List<String> groupIds) {
+    return CamerakitFlutterPlatform.instance.getGroupLenses(groupIds);
   }
 }
 

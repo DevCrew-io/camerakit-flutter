@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      _cameraKitFlutterImpl.getGroupLenses();
+      _cameraKitFlutterImpl.getGroupLenses(Constants.groupIdList);
     } on PlatformException {
       if (kDebugMode) {
         print("Failed to open camera kit");
