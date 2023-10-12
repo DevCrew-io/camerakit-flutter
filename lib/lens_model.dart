@@ -1,16 +1,43 @@
 class LensModel {
-  final String id;
-  final String name;
+  String? id;
+  String? name;
+  String? facePreference;
+  String? groupId;
+  List<String>? snapCodes;
+  List<String>? previews;
+  List<String>? thumbnail;
 
-  LensModel({
-    required this.id,
-    required this.name,
-  });
+  LensModel(
+      {this.id,
+      this.name,
+      this.facePreference,
+      this.groupId,
+      this.snapCodes,
+      this.previews,
+      this.thumbnail});
 
-  factory LensModel.fromJson(Map<String, dynamic> json) {
-    return LensModel(
-      id: json['id'],
-      name: json['name'],
-    );
+  LensModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    facePreference = json['facePreference'];
+    groupId = json['groupId'];
+    if (json['snapcodes'] != null) {
+      snapCodes = <String>[];
+      json['snapcodes'].forEach((v) {
+        snapCodes!.add(v as String);
+      });
+    }
+    if (json['previews'] != null) {
+      previews = <String>[];
+      json['previews'].forEach((v) {
+        previews!.add(v as String);
+      });
+    }
+    if (json['thumbnail'] != null) {
+      thumbnail = <String>[];
+      json['thumbnail'].forEach((v) {
+        thumbnail!.add(v as String);
+      });
+    }
   }
 }
