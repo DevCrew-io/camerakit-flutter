@@ -30,8 +30,6 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
 
     private val CHANNEL = "camerakit_flutter"
-    private lateinit var _result: MethodChannel.Result
-    private lateinit var _methodChannel: MethodChannel
     private lateinit var context: Context
     private lateinit var activity: Activity
     private lateinit var cameraKitSession: Session
@@ -94,12 +92,13 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             }
 
             MethodChannels.GET_GROUP_LENSES -> {
+                var groupIds: List<String> = call.arguments()!!
                 // Handle getting group lenses.
                 cameraKitSession = Session(activity) {
                     apiToken(Configuration.getInstance().cameraKitApiToken)
                 }
                 lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
-                    LensesComponent.Repository.QueryCriteria.Available(setOf(Configuration.getInstance().groupIds[0]))
+                    LensesComponent.Repository.QueryCriteria.Available(groupIds.toSet())
                 ) { resultLenses ->
                     resultLenses.whenHasSome { lenses ->
                         // Convert the lens data to a serialized list.
@@ -123,7 +122,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                             // invokeMethod run only on ui thread
                             activity.runOnUiThread {
                                 channel.invokeMethod(
-                                    InvokeMethods.receiveLenses,
+                                    InvokeMethods.receivedLenses,
                                     jsonString
                                 );
                             }
