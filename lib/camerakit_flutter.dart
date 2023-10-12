@@ -14,6 +14,9 @@ class CameraKitFlutterImpl {
         case 'cameraKitResults':
           cameraKitFlutterEvents.onCameraKitResult(call.arguments);
       break;
+        case 'showLensList':
+          cameraKitFlutterEvents.showLensList(call.arguments);
+          break;
 
       }
     });
@@ -37,9 +40,12 @@ class CameraKitFlutterImpl {
 
 }
 
-/// Abstract class defining event callbacks related to TwoCheckout.
+/// Abstract class defining event callbacks related to CameraKit.
 
 abstract class CameraKitFlutterEvents {
-  void onCameraKitResult(Map<dynamic,dynamic> result);
-}
 
+  void onCameraKitResult(Map<dynamic,dynamic> result);
+
+  void showLensList(String jsonString);
+
+}

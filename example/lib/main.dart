@@ -1,21 +1,21 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:camerakit_flutter/configuration_camerakit.dart';
-import 'package:camerakit_flutter_example/lens_list.dart';
+import 'package:camerakit_flutter_example/media_result_screen.dart';
+import 'package:camerakit_flutter_example/lens_list_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:camerakit_flutter/camerakit_flutter.dart';
-import 'package:video_player/video_player.dart';
 import 'package:camerakit_flutter/lens_model.dart';
 
 import 'constants.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyApp(),));
+  runApp(const MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -30,10 +30,10 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   /// right now we have no method to show override any function
   late String _filePath = '';
   late String _fileType = '';
-  late VideoPlayerController _controller;
   late List<LensModel> lensList = [];
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
+  bool isLensListPressed = false;
 
   @override
   void initState() {
@@ -66,10 +66,12 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // We also handle the message potentially returning null.
     try {
       lensList = await _cameraKitFlutterImpl.getGroupLenses();
+
       if (!mounted) return;
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => LensListWidget(lensList: lensList)));
-
-
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LensListView(lensList: lensList)));
+      isLensListPressed = false;
+      setState(() {});
     } on PlatformException {
       if (kDebugMode) {
         print("Failed to open camera kit");
@@ -80,63 +82,31 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Row(
+      appBar: AppBar(
+        title: const Text('Camera Kit'),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                getGroupLenses();
-              },
-              child: const Icon(Icons.list),
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                initCameraKit();
-              },
-              child: const Icon(Icons.camera),
-            ),
-            _filePath.isNotEmpty && _fileType == "video"
-                ? FloatingActionButton(
-                    onPressed: () {
-                      setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
-                      });
-                    },
-                    child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                    ),
-                  )
-                : Container()
+            ElevatedButton(
+                onPressed: () {
+                  isLensListPressed = true;
+                  setState(() {});
+                  getGroupLenses();
+                },
+                child: const Text("Show Lens List")),
+            ElevatedButton(
+                onPressed: () {
+                  initCameraKit();
+                },
+                child: const Text("Open CameraKit")),
+            isLensListPressed ? const CircularProgressIndicator() : Container()
           ],
         ),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /* SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-              ),*/
-              _filePath.isNotEmpty
-                  ? _fileType == 'video'
-                      ? AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
-                        )
-                      : _fileType == 'image'
-                          ? Image.file(File(_filePath))
-                          : const Text("UnKnown File to show")
-                  : const Text("No Image/Video to Preview")
-            ],
-          ),
-        ),
-      );
+      ),
+    );
   }
 
   @override
@@ -145,15 +115,29 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
       _filePath = result["path"] as String;
       _fileType = result["type"] as String;
 
-      _controller = VideoPlayerController.file(File(_filePath))
-        ..initialize().then((_) {
-          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-          setState(() {});
-        });
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => MediaResultWidget(
+                filePath: _filePath,
+                fileType: _fileType,
+              )));
     });
+  }
+  @override
+  void showLensList(String jsonString) async{
+    isLensListPressed = false;
 
-    if (kDebugMode) {
-      print('Result received in flutter=>>>>>>>>>>>>>>>>>>>>>>>> $result');
+
+    try{
+      final List<dynamic> list = json.decode(jsonString);
+      final List<LensModel> lensList = list.map((item) => LensModel.fromJson(item)).toList();
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LensListView(lensList: lensList)));
+    }catch(e){
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
+
+
   }
 }
