@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/Code-Dart-informational?style=flat&logo=dart&color=29B1EE)
 ![](https://img.shields.io/badge/Code-Flutter-informational?style=flat&logo=flutter&color=0C459C)
 
-An open-source SDK package for Flutter that provides developers with seamless integration and access to Snapchat's CameraKit features within their Flutter applications. Flutter developer now can access set configuration from Flutter for both platforms (ios and android), you can open camera kit , get media results and get list of lenses against group ids.
+An open-source SDK package for Flutter that provides developers with seamless integration and access to Snapchat's CameraKit features within their Flutter applications. Flutter developers now can access set configuration from Flutter for both platforms (IOS and Android), you can open CameraKit , get media results (Images and Videos) and get list of lenses against group ids.
 
 # Obtaining CameraKit Keys
 
