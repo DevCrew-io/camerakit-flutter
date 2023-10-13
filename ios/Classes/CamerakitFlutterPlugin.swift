@@ -63,12 +63,10 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     private func getChannel() -> FlutterMethodChannel? {
-        DispatchQueue.main.sync {
-            guard let contoller = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController else {
-                return nil
-            }
-            return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)
+        guard let contoller = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController else {
+            return nil
         }
+        return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)
     }
 }
 
