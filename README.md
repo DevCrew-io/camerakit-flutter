@@ -110,7 +110,7 @@ You can access camerakit by just calling openCameraKit function. Before calling 
 ```
 # Get group lenses
 
-to get group lenses you need to pass concerned list of group ids to the function.
+To get group lenses you need to pass concerned list of group ids to the function.
 
 ```dart
 
