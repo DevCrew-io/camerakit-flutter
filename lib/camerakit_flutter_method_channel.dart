@@ -1,7 +1,10 @@
-import 'dart:convert';
+//
+//  camerakit_flutter_method_channel.dart
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
 
-import 'package:camerakit_flutter/camerakit_flutter.dart';
-import 'package:camerakit_flutter/lens_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 

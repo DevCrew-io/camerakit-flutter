@@ -1,3 +1,10 @@
+//
+//  camerakit_flutter.dart
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
+
 import 'dart:convert';
 import 'package:camerakit_flutter/lens_model.dart';
 import 'camerakit_flutter_platform_interface.dart';

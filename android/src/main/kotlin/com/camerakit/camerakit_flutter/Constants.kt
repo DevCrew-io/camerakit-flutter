@@ -1,3 +1,10 @@
+//
+//  Constants.kt
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
+
 package com.camerakit.camerakit_flutter
 
 object MethodChannels{

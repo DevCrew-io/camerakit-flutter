@@ -1,3 +1,10 @@
+//
+//  lens_model.dart
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
+
 class Lens {
   String? id;
   String? name;
