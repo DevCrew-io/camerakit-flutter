@@ -1,9 +1,14 @@
-import 'package:camerakit_flutter/camerakit_flutter.dart';
+//
+//  camerakit_flutter_platform_interface.dart
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
 import 'configuration_camerakit.dart';
-import 'lens_model.dart';
 
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
   /// Constructs a CamerakitFlutterPlatform.

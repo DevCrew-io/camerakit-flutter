@@ -1,3 +1,11 @@
+//
+//  StringExtenstions.kt
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
+
+
 import java.util.Locale
 
 fun String.getFileType(): String {

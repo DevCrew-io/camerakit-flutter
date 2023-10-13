@@ -1,3 +1,9 @@
+//
+//  Configuration.kt
+//  com.camerakit.camerakit_flutter
+//
+//  Copyright © 2023 DevCrew I/O
+//
 class Configuration private constructor(
     val appId: String,
     val cameraKitApiToken: String,
