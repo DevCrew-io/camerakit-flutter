@@ -6,8 +6,8 @@ class Constants {
 
   static const List<String> groupIdList = ['your-group-ids'];
 
+  /// optional: if you want to get single lens you can set it otherwise set empty string
   /// The lens ID for Camera Kit (TODO: Fill lens ID here).
-
   static const cameraKitLensId = 'camera-kit-lens-id';
 
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).

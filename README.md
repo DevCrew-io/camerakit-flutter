@@ -6,6 +6,45 @@
 
 An open-source SDK package for Flutter that provides developers with seamless integration and access to Snapchat's CameraKit features within their Flutter applications. Flutter developer now can access set configuration from Flutter for both platforms (ios and android), you can open camera kit , get media results and get list of lenses against group ids.
 
+# Obtaining CameraKit Keys
+
+Your App ID and API Token can be found in the [Snap Kit Portal](https://devportal.snap.com/) and is used to provide authorized access to Camera Kit remote services.
+
+![snap_kit_id](https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/2fc86931-1fed-4fec-9cbf-964286e3b3a3)
+![snap_api_portal](https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/a78a6374-756d-4eeb-9cae-a5a7accaeefe)
+
+### CAUTION
+**API Token** is different for **Production** and **Staging** Environment. A watermark will be applied to the camera view when using the Staging API token.
+
+Once you have access to the account, locate your **groupIds**, **cameraKitLensId** (optional), **cameraKitApiTokenStaging**, and **cameraKitAppId**.
+
+Now that you have obtained all your credentials, you can use it to initialize the Configuration class in your Flutter application as mentioned in the below section.
+
+
+
+```dart
+class Constants {
+
+  /// List of group IDs for Camera Kit (TODO: Fill group ID here).
+
+  static const List<String> groupIdList = ['your-group-ids'];
+
+  /// optional: if you want to get single lense you can set it otherwise set empty sting
+  /// The lens ID for Camera Kit (TODO: Fill lens ID here).
+  ///
+
+  static const cameraKitLensId = 'camera-kit-lens-id';
+
+  /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
+
+  static const cameraKitApiTokenStaging = 'your-api-token-staging'; //TODO fill api token here
+
+  /// The application ID for Camera Kit.
+
+  static const cameraKitAppId = 'app-id';
+}
+```
+
 ## Installation
 First, add image_editor_plus: as a dependency in your pubspec.yaml file.
 
@@ -26,7 +65,11 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
 ```
 ## Demo
 
-https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/062ba5cb-553f-43da-8058-9b5d0e53d68b
+
+
+https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/071b9fdf-e8ca-40b0-935d-12e5d9814721
+
+
 
 ## Key Features
 
@@ -184,6 +227,9 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
 
 
 ```
+<img width="180" height="350" alt="2b" src="https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/c2eea95f-aaa8-43f9-9982-8d51777fe870">
+
+
 # Example show lens list
 Here is example to show list of lenses.
 ```dart
@@ -246,6 +292,9 @@ class _LensListWidgetState extends State<LensListView> {
 }
 
 ```
+<img width="180" height="350"  alt="1c" src="https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/5eecc1e8-8d8a-4e3b-84f1-956038ebf0bc">
+
+
 ## Bugs and feature requests
 
 Have a bug or a feature request? Please first search for existing and closed issues. If your problem
