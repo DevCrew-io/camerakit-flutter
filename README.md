@@ -65,9 +65,8 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
 ```
 ## Demo
 
+https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-43f1-90ae-64193fde262e
 
-
-https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/071b9fdf-e8ca-40b0-935d-12e5d9814721
 
 
 
