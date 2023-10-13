@@ -46,10 +46,10 @@ class Constants {
 ```
 
 ## Installation
-First, add image_editor_plus: as a dependency in your pubspec.yaml file.
+First, add camerakit_flutter: as a dependency in your pubspec.yaml file.
 
 ```dart
-import 'package:fhoto_editor/fhoto_editor.dart';
+import 'package:camerakit_flutter/camerakit_flutter.dart';
 ```
 Then run ```flutter pub get``` to install the package.
 ## iOS
