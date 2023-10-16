@@ -35,7 +35,7 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
         setState(() {
           if (kDebugMode) {
             print(
-              "*************** video paying  c o m p l e t e d *******************");
+                "*************** video paying  c o m p l e t e d *******************");
           }
         });
       }
