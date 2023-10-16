@@ -8,3 +8,6 @@
 
 * Get media results
 
+## 0.0.2
+
+* update documentation
