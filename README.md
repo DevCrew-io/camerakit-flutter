@@ -23,23 +23,14 @@ Now that you have obtained all your credentials, you can use it to initialize th
 
 ```dart
 class Constants {
-
   /// List of group IDs for Camera Kit (TODO: Fill group ID here).
-
   static const List<String> groupIdList = ['your-group-ids'];
-
   /// optional: if you want to get single lense you can set it otherwise set empty sting
   /// The lens ID for Camera Kit (TODO: Fill lens ID here).
-  ///
-
   static const cameraKitLensId = 'camera-kit-lens-id';
-
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
-
   static const cameraKitApiTokenStaging = 'your-api-token-staging'; //TODO fill api token here
-
   /// The application ID for Camera Kit.
-
   static const cameraKitAppId = 'app-id';
 }
 ```
@@ -51,7 +42,7 @@ First, add camerakit_flutter: as a dependency in your pubspec.yaml file.
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 ```
 Then run ```flutter pub get``` to install the package.
-## iOS
+## IOS
 Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
 
 * NSCameraUsageDescription - describe why your app needs permission for the camera library.  It's a privacy feature to ensure that apps don't access sensitive device features without the user's knowledge and consent.
@@ -71,21 +62,21 @@ https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-4
 
 ## Key Features
 
-[Passing credentials from Flutter](#set-configuration)
+[Passing CameraKit's credentials in Flutter](#set-configuration)
 
-[Access Camerakit from Flutter](#access-camerakit-from-flutter)
+[Access CameraKit in Flutter](#access-camerakit-in-flutter)
 
 [Get List of lenses for given list of group ids](#get-group-lenses)
 
 [Get media results](#get-media-results)
 
-[Example to show lens list](#example-show-lens-list)
+[Show list of lenses](#show-lens-list)
 
-[Example to show camerakit captured media](#example-show-media)
+[Show camerakit's captured media](#show-media)
 
 
 
-# Set Configuration
+## Set Configuration
 
 Configuration class is used to pass all credentials required for Camerakit. you can pass list of Group ids to show all group lenses. you don't need to set separate credentials for iOS and android.
 
@@ -99,14 +90,14 @@ final config = Configuration(
     );
     _cameraKitFlutterImpl.setCredentials(config);
 ```
-# Access Camerakit from Flutter
+## Access Camerakit in Flutter
 You can access camerakit by just calling openCameraKit function. Before calling you need and instance of CameraKitFlutterImpl to get required function
 ```dart
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
   await _cameraKitFlutterImpl.openCameraKit();
 ```
-# Get group lenses
+## Get group lenses
 
 To get group lenses you need to pass concerned list of group ids to the function.
 
@@ -131,7 +122,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
 }
  ```
 
-# Get media results
+## Get media results
 call openCamerakit function to open Camerakit,
 ```dart
   await _cameraKitFlutterImpl.openCameraKit();
@@ -147,7 +138,7 @@ After capturing image or recording video you will get the results in onCameraKit
     });
   }
 ```
-# Example show media
+## Show media
 Here is example to show the image taken by camerakit.
 ```dart
 
@@ -228,7 +219,7 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
 <img width="180" height="350" alt="2b" src="https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/c2eea95f-aaa8-43f9-9982-8d51777fe870">
 
 
-# Example show lens list
+## Show lens list
 Here is example to show list of lenses.
 ```dart
 class LensListView extends StatefulWidget {
