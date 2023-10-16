@@ -42,7 +42,7 @@ First, add camerakit_flutter: as a dependency in your pubspec.yaml file.
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 ```
 Then run ```flutter pub get``` to install the package.
-## IOS
+## iOS
 Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
 
 * NSCameraUsageDescription - describe why your app needs permission for the camera library.  It's a privacy feature to ensure that apps don't access sensitive device features without the user's knowledge and consent.
@@ -56,8 +56,6 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
 ## Demo
 
 https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-43f1-90ae-64193fde262e
-
-
 
 
 ## Key Features
@@ -78,7 +76,7 @@ https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-4
 
 ## Set Configuration
 
-Configuration class is used to pass all credentials required for Camerakit. you can pass list of Group ids to show all group lenses. you don't need to set separate credentials for iOS and android.
+Configuration class is used to pass all credentials required for Camerakit, you can pass list of Group ids to show all group lenses. You don't need to set separate credentials for iOS and Android.
 
 ```dart
 
@@ -91,7 +89,7 @@ final config = Configuration(
     _cameraKitFlutterImpl.setCredentials(config);
 ```
 ## Access Camerakit in Flutter
-You can access camerakit by just calling openCameraKit function. Before calling you need and instance of CameraKitFlutterImpl to get required function
+You can access camerakit by just calling openCameraKit function. Before calling you need instance of CameraKitFlutterImpl to get required function
 ```dart
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
@@ -123,11 +121,11 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
  ```
 
 ## Get media results
-call openCamerakit function to open Camerakit,
+Call openCamerakit function to open Camerakit,
 ```dart
   await _cameraKitFlutterImpl.openCameraKit();
 ```
-After capturing image or recording video you will get the results in onCameraKitResult method
+After capturing image or recording video you will get the results in onCameraKitResult method.
 
 ```dart
   @override
