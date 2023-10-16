@@ -10,4 +10,14 @@
 
 ## 0.0.2
 
-* update documentation
+* Refactor code
+
+* Update readme 
+
+* Add Links to homepage and repository in yaml
+
+* Implement Interface in unit testing
+
+## 0.0.3
+
+* Update documentation
