@@ -6,14 +6,13 @@
 
 An open-source SDK package for Flutter that provides developers with seamless integration and access to Snapchat's CameraKit features within their Flutter applications. Flutter developers now can access set configuration from Flutter for both platforms (IOS and Android), you can open CameraKit , get media results (Images and Videos) and get list of lenses against group ids.
 
-# Obtaining CameraKit Keys
+## Obtaining CameraKit Keys
 
 Your App ID and API Token can be found in the [Snap Kit Portal](https://devportal.snap.com/) and is used to provide authorized access to Camera Kit remote services.
+For more information you can read the docs [Android](https://docs.snap.com/camera-kit/integrate-sdk/mobile/android#service-authorization), [IOS](https://docs.snap.com/camera-kit/integrate-sdk/mobile/ios#service-authorization).
 
-![snap_kit_id](https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/2fc86931-1fed-4fec-9cbf-964286e3b3a3)
-![snap_api_portal](https://github.com/DevCrew-io/camerakit-flutter/assets/72248282/a78a6374-756d-4eeb-9cae-a5a7accaeefe)
 
-### CAUTION
+#### CAUTION
 **API Token** is different for **Production** and **Staging** Environment. A watermark will be applied to the camera view when using the Staging API token.
 
 Once you have access to the account, locate your **groupIds**, **cameraKitLensId** (optional), **cameraKitApiTokenStaging**, and **cameraKitAppId**.
