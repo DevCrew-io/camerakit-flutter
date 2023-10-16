@@ -10,8 +10,6 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockCamerakitFlutterPlatform
     with MockPlatformInterfaceMixin
     implements CamerakitFlutterPlatform {
-  @override
-  Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
   Future<void> getGroupLenses(List<String> groupIds) {
