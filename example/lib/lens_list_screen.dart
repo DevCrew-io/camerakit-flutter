@@ -37,8 +37,7 @@ class _LensListWidgetState extends State<LensListView> {
                             child: Row(
                               children: [
                                 Image.network(
-                                  widget.lensList[index].thumbnail?[0] ??
-                                      "",
+                                  widget.lensList[index].thumbnail?[0] ?? "",
                                   width: 70,
                                   height: 70,
                                 ),

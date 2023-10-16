@@ -21,3 +21,9 @@
 ## 0.0.3
 
 * Update documentation
+
+## 0.0.4
+
+* Add more detail to description in yaml
+
+* apply dart format command

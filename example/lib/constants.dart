@@ -1,7 +1,6 @@
 /// A class containing constants and configuration settings for the Camera Kit.
 
 class Constants {
-
   /// List of group IDs for Camera Kit (TODO: Fill group ID here).
 
   static const List<String> groupIdList = ['your-group-ids'];
@@ -12,7 +11,8 @@ class Constants {
 
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
 
-  static const cameraKitApiTokenStaging = 'your-api-token-staging'; //TODO fill api token here
+  static const cameraKitApiTokenStaging =
+      'your-api-token-staging'; //TODO fill api token here
 
   /// The application ID for Camera Kit.
 
