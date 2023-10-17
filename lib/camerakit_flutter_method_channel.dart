@@ -34,7 +34,6 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   setCameraKitCredentials(Configuration configuration) {
     // Prepare a map with the necessary credentials and invoke the native method to set CameraKit credentials.
     final Map<String, dynamic> arguments = {
-      'appId': configuration.appId,
       'groupIds': configuration.groupIds,
       'token': configuration.token,
       'lensId': configuration.lensId
