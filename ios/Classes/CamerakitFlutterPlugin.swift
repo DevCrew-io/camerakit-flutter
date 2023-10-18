@@ -24,6 +24,7 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
             }
             
             /// Create cameraKit session for later use e.g fetching lenses with list of group id
+            guard !Configuration.shared.apiToken.isEmpty && Configuration.shared.apiToken != "your-api-token" else { return }
             cameraKitSession = Session(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken), lensesConfig: lensesConfig, errorHandler: nil)
             
         case InputMethods.GET_GROUP_LENSES:
