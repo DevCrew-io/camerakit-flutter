@@ -15,7 +15,7 @@ For more information you can read the docs [Android](https://docs.snap.com/camer
 #### CAUTION
 **API Token** is different for **Production** and **Staging** Environment. A watermark will be applied to the camera view when using the Staging API token.
 
-Once you have access to the account, locate your **groupIds**, **cameraKitLensId** (optional), **cameraKitApiTokenStaging**, and **cameraKitAppId**.
+Once you have access to the account, locate your **groupIds**, **cameraKitLensId** (optional) and **cameraKitApiToken**.
 
 Now that you have obtained all your credentials, you can use it to initialize the Configuration class in your Flutter application as mentioned in the below section.
 
@@ -29,9 +29,7 @@ class Constants {
   /// The lens ID for Camera Kit (TODO: Fill lens ID here).
   static const cameraKitLensId = 'camera-kit-lens-id';
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
-  static const cameraKitApiTokenStaging = 'your-api-token-staging'; //TODO fill api token here
-  /// The application ID for Camera Kit.
-  static const cameraKitAppId = 'app-id';
+  static const cameraKitApiToken = 'your-api-token'; //TODO fill api token staging & production here
 }
 ```
 
@@ -81,9 +79,8 @@ Configuration class is used to pass all credentials required for Camerakit, you 
 ```dart
 
 final config = Configuration(
-      Constants.cameraKitAppId,
+      Constants.cameraKitApiToken,
       Constants.groupIdList,
-      Constants.cameraKitApiTokenStaging,
       Constants.cameraKitLensId,
     );
     _cameraKitFlutterImpl.setCredentials(config);
