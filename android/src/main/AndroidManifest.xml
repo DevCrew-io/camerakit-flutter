@@ -5,10 +5,4 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- To remove following exception add HIGH_SAMPLING_RATE_SENSORS permission:
-         java.lang.SecurityException: To use the sampling rate of 0 microseconds,
-         app needs to declare the normal permission HIGH_SAMPLING_RATE_SENSORS.
-         Ref: https://jis-eurasipjournals.springeropen.com/articles/10.1186/s13635-017-0061-8 -->
-    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
-
 </manifest>

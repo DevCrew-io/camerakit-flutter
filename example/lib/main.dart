@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   void initState() {
     super.initState();
     final config = Configuration(
-      Constants.cameraKitApiToken,
+      Constants.cameraKitApiTokenStaging,
       Constants.groupIdList,
       Constants.cameraKitLensId,
     );

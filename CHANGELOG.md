@@ -27,3 +27,13 @@
 * Add more detail to description in yaml
 
 * apply dart format command
+
+## 0.0.5
+
+* permission HIGH_SAMPLING_RATE_SENSORS removed from plugin
+
+* App id Removed 
+
+* Snap CameraKit Upgraded to 1.26.1
+
+* Refactoring
