@@ -1,14 +1,14 @@
 PODS:
   - camerakit_flutter (0.0.1):
     - Flutter
-    - SCSDKCameraKit (~> 1.26.0)
-    - SCSDKCameraKitReferenceUI (~> 1.26.0)
+    - SCSDKCameraKit (~> 1.26.1)
+    - SCSDKCameraKitReferenceUI (~> 1.26.1)
   - Flutter (1.0.0)
   - integration_test (0.0.1):
     - Flutter
-  - SCSDKCameraKit (1.26.0)
-  - SCSDKCameraKitReferenceUI (1.26.0):
-    - SCSDKCameraKit (~> 1.26.0)
+  - SCSDKCameraKit (1.26.1)
+  - SCSDKCameraKitReferenceUI (1.26.1):
+    - SCSDKCameraKit (~> 1.26.1)
   - video_player_avfoundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -35,11 +35,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
-  camerakit_flutter: 19b7e96d9cbe378ad661ac45f634f62c3532591d
+  camerakit_flutter: a6fc56bcea70f9ea3162ccaeb2372229c5768851
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   integration_test: 13825b8a9334a850581300559b8839134b124670
-  SCSDKCameraKit: a5b201bfd0afe5bafb1064fc518a8b6367687928
-  SCSDKCameraKitReferenceUI: 479be0a883cea4f0f5f6812b9085e4f49ac7bb42
+  SCSDKCameraKit: 3ebeb28638f7d478257caa3102e0edc987eb1a63
+  SCSDKCameraKitReferenceUI: 9013428085da7532f2eb94204dc06882072b6081
   video_player_avfoundation: 8563f13d8fc8b2c29dc2d09e60b660e4e8128837
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189

@@ -11,10 +11,6 @@ class Constants {
 
   /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
 
-  static const cameraKitApiTokenStaging =
-      'your-api-token-staging'; //TODO fill api token here
-
-  /// The application ID for Camera Kit.
-
-  static const cameraKitAppId = 'app-id';
+  static const cameraKitApiToken =
+      'your-api-token'; // TODO fill api token staging or production here
 }
