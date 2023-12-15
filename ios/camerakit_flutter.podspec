@@ -21,7 +21,7 @@ A camerakit plugin for Flutter
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  s.dependency 'SCSDKCameraKit', '~> 1.26.1'
-  s.dependency 'SCSDKCameraKitReferenceUI', '~> 1.26.1'
+  s.dependency 'SCSDKCameraKit', '~> 1.27.0'
+  s.dependency 'SCSDKCameraKitReferenceUI', '~> 1.27.0'
 
 end
