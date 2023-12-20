@@ -19,8 +19,6 @@ Once you have access to the account, locate your **groupIds**, **cameraKitLensId
 
 Now that you have obtained all your credentials, you can use it to initialize the Configuration class in your Flutter application as mentioned in the below section.
 
-
-
 ```dart
 class Constants {
   /// List of group IDs for Camera Kit (TODO: Fill group ID here).
@@ -32,14 +30,17 @@ class Constants {
   static const cameraKitApiToken = 'your-api-token'; //TODO fill api token staging & production here
 }
 ```
+**Note:** To use production api token, your camerakit app should be approved and live on snapchat developer portal.
+Otherwise the app may cause `unauthorized` exception. [Read more](https://docs.snap.com/camera-kit/app-review/release-app) about submitting app for review
 
 ## Installation
-First, add camerakit_flutter: as a dependency in your pubspec.yaml file.
+First, add `camerakit_flutter:` as a dependency in your pubspec.yaml file.
+Then run ```flutter pub get``` to install the package.
 
+Now in your Dart code, you can use:
 ```dart
 import 'package:camerakit_flutter/camerakit_flutter.dart';
 ```
-Then run ```flutter pub get``` to install the package.
 ## iOS
 Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
 
@@ -50,6 +51,32 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
 	<string>app need camera permission for showing camerakit lens</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>app need microphone permission for recording a video</string>
+```
+* (Optional: To fix cocoapods installation error) Inside `Podfile` under `iOS` directory of your flutter project, uncomment the following line and set the iOS version 13
+  ```
+  platform :ios, '11.0'
+  ```
+## Android 
+* CameraKit android SDK requires to use an AppCompat Theme for application, so make sure your application theme inherits an AppCompat theme.
+
+* For example: in your `style.xml` define a new theme like this: 
+```xml
+<style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+```
+* and then in `AndroidManifest.xml` 
+```xml
+<application
+        ...
+        android:theme="@style/AppTheme">
+    ...
+    ...
+</application>
+```
+* Make sure in `build.gradle` under app module, the `minSdkVersion` version is `21`
+```groovy
+defaultConfig {
+    minSdkVersion 21
+}
 ```
 ## Demo
 
