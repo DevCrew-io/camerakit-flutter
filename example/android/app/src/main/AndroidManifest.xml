@@ -4,6 +4,10 @@
         android:name="${applicationName}"
         android:theme="@style/AppCompat"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.snap.camerakit.app.id" android:value="your-application-id" />
+        <meta-data android:name="com.snap.camerakit.api.token" android:value="your-api-token" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
