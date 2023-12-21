@@ -42,9 +42,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>SCSDKClientId</key>
-	<string>[Enter the OAuth2 client ID you get from the Snap Kit developer portal]</string>
-	<key>SCCameraKitAPIToken</key>
-	<string>your-api-token</string>
 </dict>
 </plist>

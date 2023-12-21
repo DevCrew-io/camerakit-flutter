@@ -44,15 +44,9 @@ Now in your Dart code, you can use:
 ## iOS
 Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
 
-* SCSDKClientId - in order to test sharing to Snapchat, enter the OAuth2 client ID you get from the Snap Kit developer portal.
-* SCCameraKitAPIToken - fill api token staging or production here.
 * NSCameraUsageDescription - describe why your app needs permission for the camera library.  It's a privacy feature to ensure that apps don't access sensitive device features without the user's knowledge and consent.
 * NSMicrophoneUsageDescription - used to explain to the user why the app needs access to the device's microphone.
 ```dart
-    <key>SCSDKClientId</key>
-    <string>[Enter the OAuth2 client ID you get from the Snap Kit developer portal]</string>
-    <key>SCCameraKitAPIToken</key>
-    <string>your-api-token</string>
     <key>NSCameraUsageDescription</key>
     <string>app need camera permission for showing camerakit lens</string>
     <key>NSMicrophoneUsageDescription</key>
@@ -74,16 +68,6 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
     <application
         ...
         android:theme="@style/AppTheme">
-        ...
-        ...
-    </application>
-```
-* Make sure to add these <meta-data> tags in `AndroidManifest.xml` under <application> tag
-```xml
-    <application
-        ...
-        <meta-data android:name="com.snap.camerakit.app.id" android:value="your-application-id" />
-        <meta-data android:name="com.snap.camerakit.api.token" android:value="your-api-token" />
         ...
         ...
     </application>
