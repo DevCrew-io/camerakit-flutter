@@ -1,39 +1,31 @@
-## 0.0.1
-
-* Passing credentials from Flutter
-
-* Access Camerakit from Flutter
-
-* Get List of lenses for given list of group ids
-
-* Get media results
-
-## 0.0.2
-
-* Refactor code
-
-* Update readme 
-
-* Add Links to homepage and repository in yaml
-
-* Implement Interface in unit testing
-
-## 0.0.3
-
-* Update documentation
-
-## 0.0.4
-
-* Add more detail to description in yaml
-
-* apply dart format command
+## 0.0.6
+* Make cameraKitLensId optional
+* Snap CameraKit Upgraded to 1.27.0
+* Update configuration setup instructions in README.md
 
 ## 0.0.5
-
+* Refactoring
+* App id Removed 
+* Snap CameraKit Upgraded to 1.26.1
 * permission HIGH_SAMPLING_RATE_SENSORS removed from plugin
 
-* App id Removed 
+## 0.0.4
+* apply dart format command
+* Add more detail to description in yaml
 
-* Snap CameraKit Upgraded to 1.26.1
 
-* Refactoring
+## 0.0.3
+* Update documentation
+
+## 0.0.2
+* Update readme 
+* Refactor code
+* Implement Interface in unit testing
+* Add Links to homepage and repository in yaml
+
+## 0.0.1
+* Get media results
+* Access Camerakit from Flutter
+* Passing credentials from Flutter
+* Get List of lenses for given list of group ids
+
