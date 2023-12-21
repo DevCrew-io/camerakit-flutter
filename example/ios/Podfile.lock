@@ -1,28 +1,27 @@
 PODS:
-  - camerakit_flutter (0.0.1):
+  - camerakit_flutter (0.0.6):
     - Flutter
-    - SCSDKCameraKit (~> 1.26.1)
-    - SCSDKCameraKitReferenceUI (~> 1.26.1)
+    - SCCameraKit (~> 1.27.0)
+    - SCCameraKitReferenceUI (~> 1.27.0)
   - Flutter (1.0.0)
   - integration_test (0.0.1):
     - Flutter
-  - SCSDKCameraKit (1.26.1)
-  - SCSDKCameraKitReferenceUI (1.26.1):
-    - SCSDKCameraKit (~> 1.26.1)
+  - SCCameraKit (1.27.0)
+  - SCCameraKitReferenceUI (1.27.0):
+    - SCCameraKit (~> 1.27.0)
   - video_player_avfoundation (0.0.1):
     - Flutter
-    - FlutterMacOS
 
 DEPENDENCIES:
   - camerakit_flutter (from `.symlinks/plugins/camerakit_flutter/ios`)
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
 
 SPEC REPOS:
   trunk:
-    - SCSDKCameraKit
-    - SCSDKCameraKitReferenceUI
+    - SCCameraKit
+    - SCCameraKitReferenceUI
 
 EXTERNAL SOURCES:
   camerakit_flutter:
@@ -32,16 +31,16 @@ EXTERNAL SOURCES:
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
   video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
-  camerakit_flutter: a6fc56bcea70f9ea3162ccaeb2372229c5768851
+  camerakit_flutter: 37fc1d1c766e7f0620ef7fb9f28f40763e44ee11
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   integration_test: 13825b8a9334a850581300559b8839134b124670
-  SCSDKCameraKit: 3ebeb28638f7d478257caa3102e0edc987eb1a63
-  SCSDKCameraKitReferenceUI: 9013428085da7532f2eb94204dc06882072b6081
-  video_player_avfoundation: 8563f13d8fc8b2c29dc2d09e60b660e4e8128837
+  SCCameraKit: db1a1ea9da38b2daede5c0cac8e229a8fadb27e0
+  SCCameraKitReferenceUI: d18ca7b36a8118ced848d0bd2190a7693ac370fc
+  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.14.3

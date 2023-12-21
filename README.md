@@ -20,15 +20,15 @@ Once you have access to the account, locate your **groupIds**, **cameraKitLensId
 Now that you have obtained all your credentials, you can use it to initialize the Configuration class in your Flutter application as mentioned in the below section.
 
 ```dart
-class Constants {
-  /// List of group IDs for Camera Kit (TODO: Fill group ID here).
-  static const List<String> groupIdList = ['your-group-ids'];
-  /// optional: if you want to get single lense you can set it otherwise set empty sting
-  /// The lens ID for Camera Kit (TODO: Fill lens ID here).
-  static const cameraKitLensId = 'camera-kit-lens-id';
-  /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
-  static const cameraKitApiToken = 'your-api-token'; //TODO fill api token staging & production here
-}
+    class Constants {
+      /// List of group IDs for Camera Kit (TODO: Fill group ID here).
+      static const List<String> groupIdList = ['your-group-ids'];
+      /// optional: if you want to get single lense you can set it otherwise set empty sting
+      /// The lens ID for Camera Kit (TODO: Fill lens ID here).
+      static const cameraKitLensId = 'camera-kit-lens-id';
+      /// The API token for Camera Kit in the staging environment (TODO: Fill API token here).
+      static const cameraKitApiToken = 'your-api-token'; //TODO fill api token staging & production here
+    }
 ```
 **Note:** To use production api token, your camerakit app should be approved and live on snapchat developer portal.
 Otherwise the app may cause `unauthorized` exception. [Read more](https://docs.snap.com/camera-kit/app-review/release-app) about submitting app for review
@@ -39,7 +39,7 @@ Then run ```flutter pub get``` to install the package.
 
 Now in your Dart code, you can use:
 ```dart
-import 'package:camerakit_flutter/camerakit_flutter.dart';
+    import 'package:camerakit_flutter/camerakit_flutter.dart';
 ```
 ## iOS
 Add the following keys to your Info.plist file, located in <project root>/ios/Runner/Info.plist:
@@ -47,37 +47,41 @@ Add the following keys to your Info.plist file, located in <project root>/ios/Ru
 * NSCameraUsageDescription - describe why your app needs permission for the camera library.  It's a privacy feature to ensure that apps don't access sensitive device features without the user's knowledge and consent.
 * NSMicrophoneUsageDescription - used to explain to the user why the app needs access to the device's microphone.
 ```dart
-	<key>NSCameraUsageDescription</key>
-	<string>app need camera permission for showing camerakit lens</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>app need microphone permission for recording a video</string>
+    <key>NSCameraUsageDescription</key>
+    <string>app need camera permission for showing camerakit lens</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>app need microphone permission for recording a video</string>
 ```
 * (Optional: To fix cocoapods installation error) Inside `Podfile` under `iOS` directory of your flutter project, uncomment the following line and set the iOS version 13
   ```
-  platform :ios, '11.0'
+    platform :ios, '13.0'
   ```
 ## Android 
 * CameraKit android SDK requires to use an AppCompat Theme for application, so make sure your application theme inherits an AppCompat theme.
 
 * For example: in your `style.xml` define a new theme like this: 
 ```xml
-<style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
 ```
 * and then in `AndroidManifest.xml` 
 ```xml
-<application
+    <application
         ...
         android:theme="@style/AppTheme">
-    ...
-    ...
-</application>
+        ...
+        ...
+    </application>
 ```
 * Make sure in `build.gradle` under app module, the `minSdkVersion` version is `21`
 ```groovy
-defaultConfig {
-    minSdkVersion 21
-}
+    defaultConfig {
+        minSdkVersion 21
+    }
 ```
+* Make sure in `build.gradle` under android module, the minimum `kotlin_version` version is `1.8.10`
+  ```
+    ext.kotlin_version = '1.8.10'
+  ```
 ## Demo
 
 https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-43f1-90ae-64193fde262e
@@ -104,12 +108,10 @@ https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-4
 Configuration class is used to pass all credentials required for Camerakit, you can pass list of Group ids to show all group lenses. You don't need to set separate credentials for iOS and Android.
 
 ```dart
-
-final config = Configuration(
+    final config = Configuration(
       Constants.cameraKitApiToken,
-      Constants.groupIdList,
-      Constants.cameraKitLensId,
-    );
+      Constants.groupIdList);
+      
     _cameraKitFlutterImpl.setCredentials(config);
 ```
 ## Access Camerakit in Flutter

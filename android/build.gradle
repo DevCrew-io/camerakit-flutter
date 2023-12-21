@@ -2,7 +2,7 @@ group 'com.camerakit.camerakit_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.10'
     repositories {
         google()
         mavenCentral()
@@ -52,7 +52,7 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.snap.camerakit:support-camera-activity:1.26.1"
+        implementation "com.snap.camerakit:support-camera-activity:1.27.0"
         implementation 'com.google.code.gson:gson:2.8.8' // Use the latest version available
     }
 

@@ -9,7 +9,7 @@
 class Configuration {
   final String token;
   final List<String> groupIds;
-  final String lensId;
+  String lensId;
 
-  Configuration(this.token, this.groupIds, this.lensId);
+  Configuration(this.token, this.groupIds, {this.lensId = ""});
 }
