@@ -46,26 +46,30 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
                 return
             }
             
-            let cameraController = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
-            cameraController.groupIDs = Configuration.shared.groupIds
-            let cameraViewController = FlutterCameraViewController(cameraController: cameraController)
-            cameraViewController.modalPresentationStyle = .fullScreen
-            cameraViewController.onDismiss = { [weak self] in
-                guard let lastPath = cameraViewController.url?.path,
-                      let mimeType = cameraViewController.mimeType
+            var cameraController : CameraController? = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
+            cameraController?.groupIDs = Configuration.shared.groupIds
+            var cameraViewController : FlutterCameraViewController? = FlutterCameraViewController(cameraController: cameraController!)
+            cameraViewController?.modalPresentationStyle = .fullScreen
+            cameraViewController?.onDismiss = { [weak self] in
+                guard let lastPath = cameraViewController?.url?.path,
+                      let mimeType = cameraViewController?.mimeType
                 else {
+                    cameraController = nil
+                    cameraViewController = nil
                     print("Something went wrong, Received invalid url")
                     return
                 }
                 
+                cameraController = nil
+                cameraViewController = nil
                 self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
                     "path" : lastPath,
                     "type" : mimeType
                 ])
             }
             
-            let rootViewController = (UIApplication.shared.keyWindow?.rootViewController as! FlutterViewController)
-            rootViewController.present(cameraViewController, animated: false)
+            let rootViewController = (UIApplication.shared.windows.first?.rootViewController as! FlutterViewController)
+            rootViewController.present(cameraViewController!, animated: false)
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -73,7 +77,7 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     }
     
     private func getChannel() -> FlutterMethodChannel? {
-        guard let contoller = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController else {
+        guard let contoller = UIApplication.shared.windows.first?.rootViewController as? FlutterViewController else {
             return nil
         }
         return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)
