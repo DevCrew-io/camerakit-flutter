@@ -1,5 +1,5 @@
 PODS:
-  - camerakit_flutter (0.0.6):
+  - camerakit_flutter (0.0.7):
     - Flutter
     - SCCameraKit (~> 1.27.0)
     - SCCameraKitReferenceUI (~> 1.27.0)
@@ -34,7 +34,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
-  camerakit_flutter: 37fc1d1c766e7f0620ef7fb9f28f40763e44ee11
+  camerakit_flutter: 26cbdfefa3879ebb4317f37f27b7d46563a27393
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   integration_test: 13825b8a9334a850581300559b8839134b124670
   SCCameraKit: db1a1ea9da38b2daede5c0cac8e229a8fadb27e0
