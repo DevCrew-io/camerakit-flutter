@@ -108,9 +108,10 @@ https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-4
 Configuration class is used to pass all credentials required for Camerakit, you can pass list of Group ids to show all group lenses. You don't need to set separate credentials for iOS and Android.
 
 ```dart
-    final config = Configuration(
-      Constants.cameraKitApiToken,
-      Constants.groupIdList);
+    final Configuration config = Configuration(
+        token: Constants.cameraKitApiToken,
+        groupIds: Constants.groupIdList,
+        isHideCloseButton: false);
       
     _cameraKitFlutterImpl.setCredentials(config);
 ```
@@ -171,7 +172,7 @@ class MediaResultWidget extends StatefulWidget {
   final String fileType;
 
   const MediaResultWidget(
-      {super.key, required this.filePath, required this.fileType});
+          {super.key, required this.filePath, required this.fileType});
 
   @override
   State<MediaResultWidget> createState() => _CameraResultWidgetState();
@@ -191,12 +192,14 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
       });
     _controller.addListener(() {
       if (!_controller.value.isPlaying &&
-          _controller.value.isInitialized &&
-          (_controller.value.duration == _controller.value.position)) {
+              _controller.value.isInitialized &&
+              (_controller.value.duration == _controller.value.position)) {
         //checking the duration and position every time
         setState(() {
-          print(
-              "*************** video paying  c o m p l e t e d *******************");
+          if (kDebugMode) {
+            print(
+                    "*************** video paying  c o m p l e t e d *******************");
+          }
         });
       }
     });
@@ -205,36 +208,36 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('CameraKit Result'),
-        ),
-        floatingActionButton: widget.filePath.isNotEmpty &&
-            widget.fileType == "video"
-            ? FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _controller.value.isPlaying
-                  ? _controller.pause()
-                  : _controller.play();
-            });
-          },
-          child: Icon(
-            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-          ),
-        )
-            : Container(),
-        body: widget.filePath.isNotEmpty
-            ? widget.fileType == 'video'
-            ? Center(
-          child: AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          ),
-        )
-            : widget.fileType == 'image'
-            ? Image.file(File(widget.filePath))
-            : const Text("UnKnown File to show")
-            : const Text("No File to show"));
+            appBar: AppBar(
+              title: const Text('CameraKit Result'),
+            ),
+            floatingActionButton: widget.filePath.isNotEmpty &&
+                    widget.fileType == "video"
+                    ? FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _controller.value.isPlaying
+                          ? _controller.pause()
+                          : _controller.play();
+                });
+              },
+              child: Icon(
+                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+              ),
+            )
+                    : Container(),
+            body: widget.filePath.isNotEmpty
+                    ? widget.fileType == 'video'
+                    ? Center(
+              child: AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              ),
+            )
+                    : widget.fileType == 'image'
+                    ? Center( child: Image.file(File(widget.filePath)) )
+                    : const Text("UnKnown File to show")
+                    : const Text("No File to show"));
   }
 }
 
@@ -246,6 +249,7 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
 ## Show lens list
 Here is example to show list of lenses.
 ```dart
+
 class LensListView extends StatefulWidget {
   final List<Lens> lensList;
 
@@ -270,34 +274,39 @@ class _LensListWidgetState extends State<LensListView> {
             height: 10,
           ),
           widget.lensList.isNotEmpty
-              ? Expanded(
+                  ? Expanded(
             child: ListView.separated(
-                itemCount: widget.lensList.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Row(
-                    children: [
-                      Image.network(
-                        widget.lensList[index].thumbnail?[0] ?? "",
-                        width: 70,
-                        height: 70,
+                    itemCount: widget.lensList.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                    itemBuilder: (context, index) => GestureDetector(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Image.network(
+                              widget.lensList[index].thumbnail?[0] ?? "",
+                              width: 70,
+                              height: 70,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              widget.lensList[index].name!,
+                              style: const TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic),
+                            )
+                          ],
+                        ),
                       ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        widget.lensList[index].name!,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontStyle: FontStyle.italic),
-                      )
-                    ],
-                  ),
-                )),
+                      onTap: (){
+                        Navigator.of(context).pop(widget.lensList[index].id ?? "");
+                      },
+                    )),
           )
-              : Container()
+                  : Container()
         ],
       ),
     );
