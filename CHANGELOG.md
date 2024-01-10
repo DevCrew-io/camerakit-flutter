@@ -1,3 +1,12 @@
+## 0.0.7
+### Fixed
+* `Low Quality` output image.
+* Release `Camera` and `Microphone` access when close camera screen.
+
+### Added
+* `Close Button` on camera screen, Default it is visible but can hide it with `isHideCloseButton` to true in configuration.
+* Open camera screen with single lens when user tap on a lens list.
+
 ## 0.0.6
 * Make cameraKitLensId optional
 * Snap CameraKit Upgraded to 1.27.0
