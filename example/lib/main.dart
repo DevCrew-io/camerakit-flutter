@@ -31,13 +31,13 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   late final _cameraKitFlutterImpl =
       CameraKitFlutterImpl(cameraKitFlutterEvents: this);
   bool isLensListPressed = false;
-
+  final Configuration config = Configuration(
+      token: Constants.cameraKitApiToken,
+      groupIds: Constants.groupIdList,
+      isHideCloseButton: false);
   @override
   void initState() {
     super.initState();
-    final config = Configuration(
-      Constants.cameraKitApiToken,
-      Constants.groupIdList);
 
     _cameraKitFlutterImpl.setCredentials(config);
   }
@@ -47,6 +47,8 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
+      config.lensId = "";
+      _cameraKitFlutterImpl.setCredentials(config);
       await _cameraKitFlutterImpl.openCameraKit();
     } on PlatformException {
       if (kDebugMode) {
@@ -116,7 +118,12 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   void receivedLenses(List<Lens> lensList) async {
     isLensListPressed = false;
     setState(() {});
-    await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LensListView(lensList: lensList)));
+    final lensId = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => LensListView(lensList: lensList))) as String?;
+    if(lensId?.isNotEmpty ?? false) {
+      config.lensId = lensId ?? "";
+      _cameraKitFlutterImpl.setCredentials(config);
+      _cameraKitFlutterImpl.openCameraKit();
+    }
   }
 }
