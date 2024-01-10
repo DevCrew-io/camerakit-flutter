@@ -36,7 +36,8 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
     final Map<String, dynamic> arguments = {
       'groupIds': configuration.groupIds,
       'token': configuration.token,
-      'lensId': configuration.lensId
+      'lensId': configuration.lensId,
+      'isHideCloseButton': configuration.isHideCloseButton
     };
     methodChannel.invokeMethod<String>('setCameraKitCredentials', arguments);
   }

@@ -9,7 +9,8 @@
 class Configuration {
   final String token;
   final List<String> groupIds;
+  bool isHideCloseButton;
   String lensId;
 
-  Configuration(this.token, this.groupIds, {this.lensId = ""});
+  Configuration({required this.token, required this.groupIds, this.isHideCloseButton = false, this.lensId = ""});
 }
