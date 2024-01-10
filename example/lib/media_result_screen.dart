@@ -72,7 +72,7 @@ class _CameraResultWidgetState extends State<MediaResultWidget> {
                     ),
                   )
                 : widget.fileType == 'image'
-                    ? Image.file(File(widget.filePath))
+                    ? Center( child: Image.file(File(widget.filePath)) )
                     : const Text("UnKnown File to show")
             : const Text("No File to show"));
   }
