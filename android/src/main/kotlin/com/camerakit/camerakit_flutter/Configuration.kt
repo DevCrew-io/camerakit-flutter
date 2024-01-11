@@ -1,3 +1,5 @@
+package com.camerakit.camerakit_flutter
+
 //
 //  Configuration.kt
 //  com.camerakit.camerakit_flutter
@@ -7,7 +9,8 @@
 class Configuration private constructor(
     val cameraKitApiToken: String,
     val groupIds: List<String>,
-    val lensId: String
+    val lensId: String,
+    var isHideCloseButton: Boolean
 ) {
 
     companion object {
@@ -22,6 +25,7 @@ class Configuration private constructor(
                 groupIds = arguments["groupIds"] as? List<String> ?: emptyList(),
                 cameraKitApiToken = arguments["token"] as? String ?: "",
                 lensId = arguments["lensId"] as? String ?: "",
+                isHideCloseButton = arguments["isHideCloseButton"] as? Boolean ?: false,
             )
             return instance!!
         }

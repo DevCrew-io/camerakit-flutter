@@ -76,16 +76,17 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val configuration = Configuration.getInstance()
                 val intent = if (configuration.lensId.isNotEmpty()) {
                     // Create an intent for capturing with a specific lens.
-                    CameraActivity.Capture.createIntent(
+                    ARCameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLens(
                             cameraKitApiToken = configuration.cameraKitApiToken,
                             lensId = configuration.lensId,
                             lensGroupId = configuration.groupIds[0],
                         )
                     )
+
                 } else {
                     // Create an intent for capturing with multiple lenses.
-                    CameraActivity.Capture.createIntent(
+                    ARCameraActivity.Capture.createIntent(
                         context, CameraActivity.Configuration.WithLenses(
                             cameraKitApiToken = configuration.cameraKitApiToken,
                             lensGroupIds = configuration.groupIds.toSet()
@@ -157,6 +158,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         binding.addActivityResultListener(this);
         activity = binding.activity
+
     }
 
     override fun onDetachedFromActivity() {
