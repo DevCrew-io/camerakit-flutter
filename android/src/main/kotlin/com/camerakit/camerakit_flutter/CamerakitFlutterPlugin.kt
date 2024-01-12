@@ -59,9 +59,9 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     private fun isInvalidApiToken(): Boolean {
         if( Configuration.getInstance().apiToken.isNullOrBlank() || Configuration.getInstance().apiToken == "your-api-token" ) {
+            Log.d("CameraKit-Flutter", "Your api token is invalid")
             return true
         }
-
         return false
     }
 
@@ -93,7 +93,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                         lensGroupId = groupId,
                     )
                 )
-                activity.startActivityForResult(intent, 200)
+                activity.startActivityForResult(intent, cameraKitRequestCode)
             }
 
             InputMethods.OPEN_CAMERA_KIT -> {
@@ -109,7 +109,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                         lensGroupIds = groupIds.toSet()
                     )
                 )
-                activity.startActivityForResult(intent, 200)
+                activity.startActivityForResult(intent, cameraKitRequestCode)
             }
 
             InputMethods.GET_GROUP_LENSES -> {
