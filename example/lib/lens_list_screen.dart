@@ -55,7 +55,11 @@ class _LensListWidgetState extends State<LensListView> {
                               ),
                             ),
                         onTap: (){
-                          Navigator.of(context).pop(widget.lensList[index].id ?? "");
+                          final Map<String, dynamic> arguments = {
+                            'lensId': widget.lensList[index].id ?? "",
+                            'groupId': widget.lensList[index].groupId ?? ""
+                          };
+                          Navigator.of(context).pop(arguments);
                         },
                       )),
                 )
