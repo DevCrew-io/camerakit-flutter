@@ -2,11 +2,8 @@
 // of your plugin as a separate package, instead of inlining it in the same
 // package as the core of your plugin.
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html show window;
 
-import 'package:camerakit_flutter/configuration_camerakit.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-
 import 'camerakit_flutter_platform_interface.dart';
 
 /// A web implementation of the CamerakitFlutterPlatform of the CamerakitFlutter plugin.
@@ -19,15 +16,26 @@ class CamerakitFlutterWeb extends CamerakitFlutterPlatform {
   }
 
   /// Returns a [String] containing the version of the platform.
+  // @override
+  // Future<String?> openCameraKit() async {
+
+  // }
+
   @override
-  Future<String?> openCameraKit() async {
-    final version = html.window.navigator.userAgent;
-    return version;
+  Future<String?> openCameraKit({required List<String> groupIds, bool isHideCloseButton = false}) {
+    // TODO: implement openCameraKit
+    return super.openCameraKit(groupIds: groupIds);
   }
 
   @override
-  setCameraKitCredentials(Configuration configuration) {
+  Future<String?> openCameraKitWithSingleLens({required String lensId, required String groupId, bool isHideCloseButton = false}) {
+    // TODO: implement openCameraKitWithSingleLens
+    return super.openCameraKitWithSingleLens(lensId: lensId, groupId: groupId);
+  }
+
+  @override
+  Future<String?> setCameraKitCredentials({required String apiToken}) {
     // TODO: implement setCameraKitCredentials
-    return super.setCameraKitCredentials(configuration);
+    return super.setCameraKitCredentials(apiToken: apiToken);
   }
 }

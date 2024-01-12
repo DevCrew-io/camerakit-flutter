@@ -8,7 +8,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
-import 'configuration_camerakit.dart';
 
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
   /// Constructs a CamerakitFlutterPlatform.
@@ -32,19 +31,23 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
   }
 
   MethodChannel getMethodChannel() {
-    throw UnimplementedError('getMethodChannel() has not been implemented.');
+    throw UnimplementedError('getMethodChannel has not been implemented.');
   }
 
-  Future<String?> openCameraKit() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<String?> openCameraKit({required List<String> groupIds, bool isHideCloseButton = false}) {
+    throw UnimplementedError('openCameraKit has not been implemented.');
   }
 
-  setCameraKitCredentials(Configuration configuration) {
+  Future<String?> openCameraKitWithSingleLens({required String lensId, required String groupId, bool isHideCloseButton = false}) {
+    throw UnimplementedError('openCameraKitWithSingleLens has not been implemented.');
+  }
+
+  Future<String?> setCameraKitCredentials({required String apiToken}) {
     throw UnimplementedError(
-        'setTwoCheckCredentials() has not been implemented.');
+        'setCameraKitCredentials has not been implemented.');
   }
 
-  Future<void> getGroupLenses(List<String> groupIds) {
+  Future<String?> getGroupLenses({ required List<String> groupIds}) {
     throw UnimplementedError('getGroupLenses has not been implemented.');
   }
 }
