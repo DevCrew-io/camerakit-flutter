@@ -43,7 +43,8 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      await _cameraKitFlutterImpl.openCameraKit(groupIds: Constants.groupIdList);
+      await _cameraKitFlutterImpl.openCameraKit(
+          groupIds: Constants.groupIdList, isHideCloseButton: false);
     } on PlatformException {
       if (kDebugMode) {
         print("Failed to open camera kit");
@@ -113,12 +114,14 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     isLensListPressed = false;
     setState(() {});
     final result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => LensListView(lensList: lensList))) as Map<String, dynamic>?;
+            builder: (context) => LensListView(lensList: lensList)))
+        as Map<String, dynamic>?;
     final lensId = result?['lensId'] as String?;
     final groupId = result?['groupId'] as String?;
 
     if ((lensId?.isNotEmpty ?? false) && (groupId?.isNotEmpty ?? false)) {
-      _cameraKitFlutterImpl.openCameraKitWithSingleLens(lensId: lensId!, groupId: groupId!, isHideCloseButton: true);
+      _cameraKitFlutterImpl.openCameraKitWithSingleLens(
+          lensId: lensId!, groupId: groupId!, isHideCloseButton: false);
     }
   }
 }

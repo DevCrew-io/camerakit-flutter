@@ -57,52 +57,68 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     }
 
+    private fun isInvalidApiToken(): Boolean {
+        if( Configuration.getInstance().apiToken.isNullOrBlank() || Configuration.getInstance().apiToken == "your-api-token" ) {
+            return true
+        }
+
+        return false
+    }
+
     /// onMethodCall function handles incoming method calls from Dart and performs actions accordingly.
     /// The 'call' parameter contains information about the method called, and 'result' is used to send back the result.
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            MethodChannels.SET_CAMERA_KIT_CREDENTIALS -> {
+            InputMethods.SET_CAMERA_KIT_CREDENTIALS -> {
                 // Handle setting Camera Kit credentials.
                 val arguments: Map<String, Any>? = call.arguments()
                 if (arguments != null) {
                     // Create a Configuration object from the provided arguments.
                     Configuration.createFromMap(arguments)
                 }
-
             }
 
-            MethodChannels.OPEN_CAMERA_KIT -> {
-                // Handle opening Camera Kit.
-                val configuration = Configuration.getInstance()
-                val intent = if (configuration.lensId.isNotEmpty()) {
-                    // Create an intent for capturing with a specific lens.
-                    ARCameraActivity.Capture.createIntent(
-                        context, CameraActivity.Configuration.WithLens(
-                            cameraKitApiToken = configuration.cameraKitApiToken,
-                            lensId = configuration.lensId,
-                            lensGroupId = configuration.groupIds[0],
-                        )
-                    )
+            InputMethods.OPEN_SINGLE_LENS -> {
+                val arguments: Map<String, Any>? = call.arguments()
+                val lensId = arguments?.get("lensId") as? String ?: ""
+                val groupId = arguments?.get("groupId") as? String ?: ""
+                Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
 
-                } else {
-                    // Create an intent for capturing with multiple lenses.
-                    ARCameraActivity.Capture.createIntent(
-                        context, CameraActivity.Configuration.WithLenses(
-                            cameraKitApiToken = configuration.cameraKitApiToken,
-                            lensGroupIds = configuration.groupIds.toSet()
+                if (isInvalidApiToken() || lensId.isNullOrBlank() || groupId.isNullOrBlank()) return
 
-                        )
+                val intent = ARCameraActivity.Capture.createIntent(
+                    context, CameraActivity.Configuration.WithLens(
+                        cameraKitApiToken = Configuration.getInstance().apiToken,
+                        lensId = lensId,
+                        lensGroupId = groupId,
                     )
-                }
-                // Start the Camera Activity for result.
+                )
                 activity.startActivityForResult(intent, 200)
             }
 
-            MethodChannels.GET_GROUP_LENSES -> {
-                var groupIds: List<String> = call.arguments()!!
+            InputMethods.OPEN_CAMERA_KIT -> {
+                val arguments: Map<String, Any>? = call.arguments()
+                val groupIds = arguments?.get("groupIds") as? List<String> ?: emptyList();
+                Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
+
+                if (isInvalidApiToken() || groupIds.isEmpty()) return
+
+                val intent = ARCameraActivity.Capture.createIntent(
+                    context, CameraActivity.Configuration.WithLenses(
+                        cameraKitApiToken = Configuration.getInstance().apiToken,
+                        lensGroupIds = groupIds.toSet()
+                    )
+                )
+                activity.startActivityForResult(intent, 200)
+            }
+
+            InputMethods.GET_GROUP_LENSES -> {
+                val arguments: Map<String, Any>? = call.arguments()
+                val groupIds = arguments?.get("groupIds") as? List<String> ?: emptyList();
+
                 // Handle getting group lenses.
                 cameraKitSession = Session(activity) {
-                    apiToken(Configuration.getInstance().cameraKitApiToken)
+                    apiToken(Configuration.getInstance().apiToken)
                 }
                 lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
                     LensesComponent.Repository.QueryCriteria.Available(groupIds.toSet())
@@ -129,7 +145,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                             // invokeMethod run only on ui thread
                             activity.runOnUiThread {
                                 channel.invokeMethod(
-                                    InvokeMethods.receivedLenses,
+                                    OutputMethods.RECEIVED_LENSES,
                                     jsonString
                                 );
                             }
@@ -183,7 +199,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 "type" to type
             )
 
-            channel.invokeMethod(InvokeMethods.cameraKitResults, theMap);
+            channel.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, theMap);
         } else {
             Log.d(TAG, "onActivityResult: No data received from the camera");
         }

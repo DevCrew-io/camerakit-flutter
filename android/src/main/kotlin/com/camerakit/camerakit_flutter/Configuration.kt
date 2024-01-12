@@ -7,9 +7,7 @@ package com.camerakit.camerakit_flutter
 //  Copyright © 2023 DevCrew I/O
 //
 class Configuration private constructor(
-    val cameraKitApiToken: String,
-    val groupIds: List<String>,
-    val lensId: String,
+    val apiToken: String,
     var isHideCloseButton: Boolean
 ) {
 
@@ -22,10 +20,8 @@ class Configuration private constructor(
 
         fun createFromMap(arguments: Map<String, Any>): Configuration {
             instance = Configuration(
-                groupIds = arguments["groupIds"] as? List<String> ?: emptyList(),
-                cameraKitApiToken = arguments["token"] as? String ?: "",
-                lensId = arguments["lensId"] as? String ?: "",
-                isHideCloseButton = arguments["isHideCloseButton"] as? Boolean ?: false,
+                apiToken = arguments["token"] as? String ?: "",
+                isHideCloseButton = false,
             )
             return instance!!
         }
