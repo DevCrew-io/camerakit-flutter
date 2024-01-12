@@ -67,6 +67,8 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
 
     // The backing view
     public let cameraView = CameraView()
+    public var isHideCloseButton: Bool = false
+    public var lensId: String = ""
 
     override open func loadView() {
         view = cameraView
@@ -76,7 +78,7 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
         super.viewDidLoad()
         setup()
         
-        if !Configuration.shared.isHideCloseButton {
+        if !isHideCloseButton {
             setupCloseButton()
         }
     }
@@ -193,8 +195,8 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     // MARK: CameraControllerUIDelegate
 
     open func cameraController(_ controller: CameraController, updatedLenses lenses: [Lens]) {
-        if !Configuration.shared.lensId.isEmpty {
-            let result = lenses.filter({ $0.id == Configuration.shared.lensId })
+        if !lensId.isEmpty {
+            let result = lenses.filter({ $0.id == lensId })
             guard result.count == 0 else {
                 if let lens: Lens = cameraController.cameraKit.lenses.repository.lens(
                     id: result[0].id,
@@ -211,7 +213,7 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
                 return
             }
             
-            Configuration.shared.lensId = ""
+            lensId = ""
         }
                 
         cameraView.carouselView.reloadData()
@@ -387,7 +389,7 @@ extension FlutterCameraViewController {
     private func closeButtonPressed(_ sender: UIButton) {
         clearLens()
         cameraView.carouselView.selectItem(EmptyItem())
-        if !Configuration.shared.lensId.isEmpty {
+        if !lensId.isEmpty {
             self.closeSnapchatSDK()
         }
     }
