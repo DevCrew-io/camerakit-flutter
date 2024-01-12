@@ -207,9 +207,9 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
                 //2. Remove UI elements
                 cameraView.carouselView.isHidden = true
                 cameraView.carouselView.isUserInteractionEnabled = false
-                cameraView.cameraActionsView.isHidden = true
-                cameraView.cameraActionsView.isUserInteractionEnabled = false
-                cameraView.messageView.isHidden = true
+//                cameraView.cameraActionsView.isHidden = true
+//                cameraView.cameraActionsView.isUserInteractionEnabled = false
+//                cameraView.messageView.isHidden = true
                 return
             }
             
