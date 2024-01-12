@@ -29,6 +29,7 @@ class CameraKitFlutterImpl {
         case InputMethods.cameraKitResults:
           // When 'cameraKitResults' method is called, trigger the corresponding event with the provided arguments.
           cameraKitFlutterEvents.onCameraKitResult(call.arguments);
+          break;
         case InputMethods.receivedLenses:
           // When 'receiveLenses' method is called, decode the JSON arguments and map them to Lens objects.
           final List<dynamic> list = json.decode(call.arguments);
@@ -36,6 +37,7 @@ class CameraKitFlutterImpl {
               list.map((item) => Lens.fromJson(item)).toList();
           // Trigger the 'receiveLenses' event with the list of Lens objects.
           cameraKitFlutterEvents.receivedLenses(lensList);
+          break;
       }
     });
   }

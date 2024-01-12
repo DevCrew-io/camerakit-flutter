@@ -1,11 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:camerakit_flutter/camerakit_flutter_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelCamerakitFlutter platform = MethodChannelCamerakitFlutter();
   const MethodChannel channel = MethodChannel('camerakit_flutter');
 
   setUp(() {

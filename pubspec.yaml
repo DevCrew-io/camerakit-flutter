@@ -6,7 +6,7 @@ repository: https://github.com/DevCrew-io/camerakit-flutter
 issue_tracker: https://github.com/DevCrew-io/camerakit-flutter/issues
 documentation: https://github.com/DevCrew-io/camerakit-flutter/blob/main/README.md
 environment:
-  sdk: '>=3.1.0-231.0.dev <4.0.0'
+  sdk: '>=2.18.0 <4.0.0'
   flutter: '>=3.3.0'
 
 dependencies:
