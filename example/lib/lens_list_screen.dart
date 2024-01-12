@@ -32,27 +32,36 @@ class _LensListWidgetState extends State<LensListView> {
                       itemCount: widget.lensList.length,
                       separatorBuilder: (BuildContext context, int index) =>
                           const Divider(),
-                      itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  widget.lensList[index].thumbnail?[0] ?? "",
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  widget.lensList[index].name!,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontStyle: FontStyle.italic),
-                                )
-                              ],
+                      itemBuilder: (context, index) => GestureDetector(
+                        child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Image.network(
+                                    widget.lensList[index].thumbnail?[0] ?? "",
+                                    width: 70,
+                                    height: 70,
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    widget.lensList[index].name!,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontStyle: FontStyle.italic),
+                                  )
+                                ],
+                              ),
                             ),
-                          )),
+                        onTap: (){
+                          final Map<String, dynamic> arguments = {
+                            'lensId': widget.lensList[index].id ?? "",
+                            'groupId': widget.lensList[index].groupId ?? ""
+                          };
+                          Navigator.of(context).pop(arguments);
+                        },
+                      )),
                 )
               : Container()
         ],

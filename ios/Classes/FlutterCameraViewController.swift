@@ -53,9 +53,22 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
             return .portrait
         }
     }
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.accessibilityIdentifier = PreviewElements.closeButton.id
+        button.setImage(
+            UIImage(named: "ck_close_x", in: BundleHelper.resourcesBundle, compatibleWith: nil), for: .normal
+        )
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        return button
+    }()
 
     // The backing view
     public let cameraView = CameraView()
+    public var isHideCloseButton: Bool = false
+    public var lensId: String = ""
 
     override open func loadView() {
         view = cameraView
@@ -64,6 +77,10 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     override open func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        
+        if !isHideCloseButton {
+            setupCloseButton()
+        }
     }
 
     override open func viewDidAppear(_ animated: Bool) {
@@ -178,8 +195,8 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     // MARK: CameraControllerUIDelegate
 
     open func cameraController(_ controller: CameraController, updatedLenses lenses: [Lens]) {
-        if !Configuration.shared.lensId.isEmpty {
-            let result = lenses.filter({ $0.id == Configuration.shared.lensId })
+        if !lensId.isEmpty {
+            let result = lenses.filter({ $0.id == lensId })
             guard result.count == 0 else {
                 if let lens: Lens = cameraController.cameraKit.lenses.repository.lens(
                     id: result[0].id,
@@ -190,13 +207,13 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
                 //2. Remove UI elements
                 cameraView.carouselView.isHidden = true
                 cameraView.carouselView.isUserInteractionEnabled = false
-                cameraView.cameraActionsView.isHidden = true
-                cameraView.cameraActionsView.isUserInteractionEnabled = false
-                cameraView.messageView.isHidden = true
+//                cameraView.cameraActionsView.isHidden = true
+//                cameraView.cameraActionsView.isUserInteractionEnabled = false
+//                cameraView.messageView.isHidden = true
                 return
             }
             
-            Configuration.shared.lensId = ""
+            lensId = ""
         }
                 
         cameraView.carouselView.reloadData()
@@ -271,6 +288,26 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     private func hideAllHints() {
         cameraView.hintLabel.layer.removeAllAnimations()
         cameraView.hintLabel.alpha = 0.0
+    }
+}
+
+// MARK: Close Button
+
+extension FlutterCameraViewController {
+    private func setupCloseButton() {
+        closeButton.addTarget(self, action: #selector(closeSnapchatSDK), for: .touchUpInside)
+        view.addSubview(closeButton)
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 6.0),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8.0),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
+            closeButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+
+    @objc private func closeSnapchatSDK() {
+        onDismiss?()
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -352,8 +389,8 @@ extension FlutterCameraViewController {
     private func closeButtonPressed(_ sender: UIButton) {
         clearLens()
         cameraView.carouselView.selectItem(EmptyItem())
-        if !Configuration.shared.lensId.isEmpty {
-            self.dismiss(animated: true)
+        if !lensId.isEmpty {
+            self.closeSnapchatSDK()
         }
     }
 
@@ -554,24 +591,14 @@ extension FlutterCameraViewController: CameraButtonDelegate {
     public func cameraButtonTapped(_ cameraButton: CameraButton) {
         print("Camera button tapped")
         cameraController.takePhoto { image, error in
-            guard let image else { return }
-
-            let targetSize = CGSize(width: UIScreen.main.bounds.width * 0.5 , height: UIScreen.main.bounds.width * 0.5)
-            let widthScaleRatio = targetSize.width / image.size.width
-            let heightScaleRatio = targetSize.height / image.size.height
-            let scaleFactor = min(widthScaleRatio, heightScaleRatio)
-            let scaledSize = CGSize(
-                width: image.size.width * scaleFactor,
-                height: image.size.height * scaleFactor
-            )
-
-            let resizedImage = UIGraphicsImageRenderer(size: scaledSize).image {_ in
-                image.draw(in: CGRect(origin: .zero, size: scaledSize))
+            guard let image else {
+                self.closeSnapchatSDK()
+                return
             }
-
+            
             self.cameraController.clearLens(willReapply: true)
             let url = URL(fileURLWithPath: "\(NSTemporaryDirectory())\(UUID().uuidString).png")
-            guard let data = resizedImage.jpegData(compressionQuality: 1) ?? image.pngData() else { return }
+            guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else { return }
 
             do {
                 try data.write(to: url)
@@ -580,8 +607,8 @@ extension FlutterCameraViewController: CameraButtonDelegate {
             } catch {
                 print(error.localizedDescription)
             }
-            self.onDismiss?()
-            self.dismiss(animated: true)
+            
+            self.closeSnapchatSDK()
         }
     }
 
@@ -614,8 +641,7 @@ extension FlutterCameraViewController: CameraButtonDelegate {
                 self.mimeType = "video"
                 self.cameraController.clearLens(willReapply: true)
                 self.cameraController.restoreBrightnessIfNecessary()
-                self.onDismiss?()
-                self.dismiss(animated: true)
+                self.closeSnapchatSDK()
             }
         }
     }
@@ -686,7 +712,7 @@ extension FlutterCameraViewController {
         }
 
         public var viewControllerForPresentingAgreements: UIViewController {
-            cameraViewController ?? UIApplication.shared.keyWindow!.rootViewController!
+            cameraViewController ?? UIApplication.shared.windows.first!.rootViewController!
         }
 
         public func dismissAgreementsViewController(_ viewController: UIViewController, accepted: Bool) {

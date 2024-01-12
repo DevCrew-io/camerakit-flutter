@@ -1,4 +1,3 @@
-import 'package:camerakit_flutter/configuration_camerakit.dart';
 import 'package:camerakit_flutter/lens_model.dart';
 import 'package:flutter/src/services/platform_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,11 +9,6 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockCamerakitFlutterPlatform
     with MockPlatformInterfaceMixin
     implements CamerakitFlutterPlatform {
-  @override
-  Future<void> getGroupLenses(List<String> groupIds) {
-    // TODO: implement getGroupLenses
-    throw UnimplementedError();
-  }
 
   @override
   MethodChannel getMethodChannel() {
@@ -23,13 +17,25 @@ class MockCamerakitFlutterPlatform
   }
 
   @override
-  Future<String?> openCameraKit() {
+  Future<String?> openCameraKit({required List<String> groupIds, bool isHideCloseButton = false}) {
     // TODO: implement openCameraKit
     throw UnimplementedError();
   }
 
   @override
-  setCameraKitCredentials(Configuration configuration) {
+  Future<String?> openCameraKitWithSingleLens({required String lensId, required String groupId, bool isHideCloseButton = false}) {
+    // TODO: implement openCameraKitWithSingleLens
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getGroupLenses({required List<String> groupIds}) {
+    // TODO: implement getGroupLenses
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> setCameraKitCredentials({required String apiToken}) {
     // TODO: implement setCameraKitCredentials
     throw UnimplementedError();
   }
@@ -41,15 +47,6 @@ void main() {
 
   test('$MethodChannelCamerakitFlutter is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelCamerakitFlutter>());
-  });
-
-  test('getPlatformVersion', () async {
-    CameraKitFlutterImpl camerakitFlutterPlugin = CameraKitFlutterImpl(
-        cameraKitFlutterEvents: MockTwoCameraKitFlutterEvents());
-    MockCamerakitFlutterPlatform fakePlatform = MockCamerakitFlutterPlatform();
-    CamerakitFlutterPlatform.instance = fakePlatform;
-
-    expect(await camerakitFlutterPlugin.openCameraKit(), '42');
   });
 }
 

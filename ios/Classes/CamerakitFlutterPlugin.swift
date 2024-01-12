@@ -23,57 +23,88 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
                 Configuration.shared.fromMap(arguments)
             }
             
-            guard !Configuration.shared.apiToken.isEmpty && Configuration.shared.apiToken != "your-api-token" else {
-                print("CameraKit: Invalid Api Token")
-                return
-            }
+            guard isValidApiToken() else { return }
             
             /// Create CameraKit session for later use e.g fetching lenses with list of group id
             cameraKitSession = Session(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken), lensesConfig: lensesConfig, errorHandler: nil)
             
         case InputMethods.GET_GROUP_LENSES:
-            guard let arguments = call.arguments as? [String] else { return }
+            guard isValidApiToken(),
+                  let arguments = call.arguments as? [String : Any]
+            else { return }
             
-            groupLenses = arguments
+            groupLenses = arguments["groupIds"] as? [String] ?? []
             lensesDictionary.removeAll()
             for id in groupLenses {
                 cameraKitSession?.lenses.repository.addObserver(self, groupID: id)
             }
             
-        case InputMethods.OPEN_CAMERA_KIT:
-            guard !Configuration.shared.apiToken.isEmpty && Configuration.shared.apiToken != "your-api-token" else {
-                print("CameraKit: Invalid Api Token")
-                return
-            }
+        case InputMethods.OPEN_SINGLE_LENS:
+            guard isValidApiToken(),
+                  let arguments = call.arguments as? [String : Any],
+                  let lensId = arguments["lensId"] as? String,
+                  let groupId = arguments["groupId"] as? String,
+                  let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
+            else { return }
             
-            let cameraController = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
-            cameraController.groupIDs = Configuration.shared.groupIds
-            let cameraViewController = FlutterCameraViewController(cameraController: cameraController)
-            cameraViewController.modalPresentationStyle = .fullScreen
-            cameraViewController.onDismiss = { [weak self] in
-                guard let lastPath = cameraViewController.url?.path,
-                      let mimeType = cameraViewController.mimeType
-                else {
-                    print("Something went wrong, Received invalid url")
-                    return
-                }
-                
-                self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
-                    "path" : lastPath,
-                    "type" : mimeType
-                ])
-            }
+            openCameraKit(groupIds: [groupId], lensId: lensId, isHideCloseButton: isHideCloseButton)
             
-            let rootViewController = (UIApplication.shared.keyWindow?.rootViewController as! FlutterViewController)
-            rootViewController.present(cameraViewController, animated: false)
+        case InputMethods.OPEN_CAMERA_KIT, InputMethods.OPEN_SINGLE_LENS:
+            guard isValidApiToken(),
+                  let arguments = call.arguments as? [String : Any],
+                  let groupIds = arguments["groupIds"] as? [String],
+                  let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
+            else { return }
+            
+            openCameraKit(groupIds: groupIds, isHideCloseButton: isHideCloseButton)
+            
         default:
             result(FlutterMethodNotImplemented)
         }
         
     }
     
+    private func isValidApiToken() -> Bool {
+        guard !Configuration.shared.apiToken.isEmpty && Configuration.shared.apiToken != "your-api-token" else {
+            print("CameraKit: Invalid Api Token")
+            return false
+        }
+        
+        return true
+    }
+    
+    private func openCameraKit(groupIds: [String], lensId: String = "", isHideCloseButton: Bool = false) {
+        var cameraController : CameraController? = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
+        cameraController?.groupIDs = groupIds
+        
+        var cameraViewController : FlutterCameraViewController? = FlutterCameraViewController(cameraController: cameraController!)
+        cameraViewController?.lensId = lensId
+        cameraViewController?.isHideCloseButton = isHideCloseButton
+        cameraViewController?.modalPresentationStyle = .fullScreen
+        cameraViewController?.onDismiss = { [weak self] in
+            guard let lastPath = cameraViewController?.url?.path,
+                  let mimeType = cameraViewController?.mimeType
+            else {
+                cameraController = nil
+                cameraViewController = nil
+                print("Something went wrong, Received invalid url")
+                return
+            }
+            
+            cameraController = nil
+            cameraViewController = nil
+            self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
+                "path" : lastPath,
+                "type" : mimeType
+            ])
+        }
+        
+        let rootViewController = (UIApplication.shared.windows.first?.rootViewController as! FlutterViewController)
+        rootViewController.present(cameraViewController!, animated: false)
+    }
+    
     private func getChannel() -> FlutterMethodChannel? {
-        guard let contoller = UIApplication.shared.keyWindow?.rootViewController as? FlutterViewController else {
+        guard let contoller = UIApplication.shared.windows.first?.rootViewController as? FlutterViewController else {
             return nil
         }
         return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)

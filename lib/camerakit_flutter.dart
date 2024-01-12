@@ -6,10 +6,10 @@
 //
 
 import 'dart:convert';
+import 'package:camerakit_flutter/invoke_methods.dart';
 import 'package:camerakit_flutter/lens_model.dart';
 import 'camerakit_flutter_platform_interface.dart';
 import 'package:flutter/services.dart';
-import 'configuration_camerakit.dart';
 
 /// CameraKitFlutterImpl is a class responsible for handling method calls and events from the CameraKit platform.
 
@@ -26,35 +26,45 @@ class CameraKitFlutterImpl {
         .setMethodCallHandler((MethodCall call) async {
       // Handle method calls based on their method name.
       switch (call.method) {
-        case 'cameraKitResults':
+        case InputMethods.cameraKitResults:
           // When 'cameraKitResults' method is called, trigger the corresponding event with the provided arguments.
           cameraKitFlutterEvents.onCameraKitResult(call.arguments);
-          break;
-        case 'receivedLenses':
+        case InputMethods.receivedLenses:
           // When 'receiveLenses' method is called, decode the JSON arguments and map them to Lens objects.
           final List<dynamic> list = json.decode(call.arguments);
           final List<Lens> lensList =
               list.map((item) => Lens.fromJson(item)).toList();
           // Trigger the 'receiveLenses' event with the list of Lens objects.
           cameraKitFlutterEvents.receivedLenses(lensList);
-          break;
       }
     });
   }
 
   /// Asynchronously opens the CameraKit.
-  Future<String?> openCameraKit() {
-    return CamerakitFlutterPlatform.instance.openCameraKit();
+  Future<String?> openCameraKit(
+      {required List<String> groupIds, bool isHideCloseButton = false}) {
+    return CamerakitFlutterPlatform.instance.openCameraKit(
+        groupIds: groupIds, isHideCloseButton: isHideCloseButton);
+  }
+
+  /// Asynchronously opens the CameraKit with single lens.
+  Future<String?> openCameraKitWithSingleLens(
+      {required String lensId,
+      required String groupId,
+      bool isHideCloseButton = false}) {
+    return CamerakitFlutterPlatform.instance.openCameraKitWithSingleLens(
+        lensId: lensId, groupId: groupId, isHideCloseButton: isHideCloseButton);
   }
 
   /// Method to set Snap CameraKit credentials.
-  setCredentials(Configuration configuration) {
-    CamerakitFlutterPlatform.instance.setCameraKitCredentials(configuration);
+  Future<String?> setCredentials({required String apiToken}) {
+    return CamerakitFlutterPlatform.instance
+        .setCameraKitCredentials(apiToken: apiToken);
   }
 
   /// Asynchronously retrieves group lenses from the CameraKit.
-  Future<void> getGroupLenses(List<String> groupIds) {
-    return CamerakitFlutterPlatform.instance.getGroupLenses(groupIds);
+  Future<String?> getGroupLenses({required List<String> groupIds}) {
+    return CamerakitFlutterPlatform.instance.getGroupLenses(groupIds: groupIds);
   }
 }
 
