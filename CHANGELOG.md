@@ -7,6 +7,11 @@
 * `Close Button` on camera screen, Default it is visible but can hide it with `isHideCloseButton` to true in configuration.
 * Open camera screen with single lens when user tap on a lens list.
 
+### Updated
+* Package implementation guide.
+* Example Project
+* README.md
+
 ## 0.0.6
 * Make cameraKitLensId optional
 * Snap CameraKit Upgraded to 1.27.0
