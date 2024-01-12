@@ -1,11 +1,11 @@
 ## 0.0.7
 ### Fixed
-* `Low Quality` output image.
-* Release `Camera` and `Microphone` access when close camera screen.
+* `Low Quality` output image (iOS).
+* Release `Camera` and `Microphone` access when closing the camera screen (iOS).
 
 ### Added
-* `Close Button` on camera screen, Default it is visible but can hide it with `isHideCloseButton` to true in configuration.
-* Open camera screen with single lens when user tap on a lens list.
+* `Close Button` on camera screen, Default it is visible but can hide it with `isHideCloseButton` to true.
+* Open the camera screen with a single lens when the user taps on a lens list.
 
 ### Updated
 * Package implementation guide.
