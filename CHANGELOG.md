@@ -1,3 +1,6 @@
+## 1.0.0
+* Fix dart formatting warnings for pub points
+
 ## 0.0.7
 ### Fixed
 * `Low Quality` output image (iOS).
