@@ -34,12 +34,17 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('getMethodChannel has not been implemented.');
   }
 
-  Future<String?> openCameraKit({required List<String> groupIds, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKit(
+      {required List<String> groupIds, bool isHideCloseButton = false}) {
     throw UnimplementedError('openCameraKit has not been implemented.');
   }
 
-  Future<String?> openCameraKitWithSingleLens({required String lensId, required String groupId, bool isHideCloseButton = false}) {
-    throw UnimplementedError('openCameraKitWithSingleLens has not been implemented.');
+  Future<String?> openCameraKitWithSingleLens(
+      {required String lensId,
+      required String groupId,
+      bool isHideCloseButton = false}) {
+    throw UnimplementedError(
+        'openCameraKitWithSingleLens has not been implemented.');
   }
 
   Future<String?> setCameraKitCredentials({required String apiToken}) {
@@ -47,7 +52,7 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
         'setCameraKitCredentials has not been implemented.');
   }
 
-  Future<String?> getGroupLenses({ required List<String> groupIds}) {
+  Future<String?> getGroupLenses({required List<String> groupIds}) {
     throw UnimplementedError('getGroupLenses has not been implemented.');
   }
 }
