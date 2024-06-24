@@ -1,3 +1,6 @@
+## 1.0.1
+* Update Camera kit SDK to 1.31.0
+
 ## 1.0.0
 * Fix dart formatting warnings for pub points
 
