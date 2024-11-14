@@ -39,6 +39,7 @@ The easiest way to include this, is to define a <meta-data> tag in AndroidManife
 
 #### iOS Setup
 Add `SCCameraKitClientID` (string), and set it to your application's Snap Kit App ID in your application's `Info.plist` file.
+
 Add `SCCameraKitAPIToken` (string), and set it to your application's API Token in your application's `Info.plist` file.
 
 **Note:** To use production api token, your camerakit app should be approved and live on snapchat developer portal.
