@@ -115,7 +115,7 @@ extension CamerakitFlutterPlugin: LensRepositoryGroupObserver {
         }
 
         let jsonString = resultDict.toJSONString()
-        cameraKitSession = ni
+        cameraKitSession = nil
         getChannel()?.invokeMethod(OutputMethods.RECEIVED_LENSES, arguments: jsonString)
     }
     

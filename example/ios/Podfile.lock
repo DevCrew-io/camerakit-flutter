@@ -11,12 +11,13 @@ PODS:
     - SCCameraKit (~> 1.35.0)
   - video_player_avfoundation (0.0.1):
     - Flutter
+    - FlutterMacOS
 
 DEPENDENCIES:
   - camerakit_flutter (from `.symlinks/plugins/camerakit_flutter/ios`)
   - Flutter (from `Flutter`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
 SPEC REPOS:
   trunk:
@@ -31,7 +32,7 @@ EXTERNAL SOURCES:
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
   video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/ios"
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
   camerakit_flutter: 6b2564df8d962a2b3a34255b04f3cdac45f6a939
@@ -39,7 +40,7 @@ SPEC CHECKSUMS:
   integration_test: 13825b8a9334a850581300559b8839134b124670
   SCCameraKit: 470ca4b93ae4e53d1934b90592444aa826f2f493
   SCCameraKitReferenceUI: 8c2fb7b447d1099d7aba4d17c38d20922c358ff6
-  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
+  video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
 
 PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
 
