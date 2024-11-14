@@ -33,12 +33,6 @@ class MockCamerakitFlutterPlatform
     // TODO: implement getGroupLenses
     throw UnimplementedError();
   }
-
-  @override
-  Future<String?> setCameraKitCredentials({required String apiToken}) {
-    // TODO: implement setCameraKitCredentials
-    throw UnimplementedError();
-  }
 }
 
 void main() {

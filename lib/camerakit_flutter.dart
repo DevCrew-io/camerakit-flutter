@@ -58,12 +58,6 @@ class CameraKitFlutterImpl {
         lensId: lensId, groupId: groupId, isHideCloseButton: isHideCloseButton);
   }
 
-  /// Method to set Snap CameraKit credentials.
-  Future<String?> setCredentials({required String apiToken}) {
-    return CamerakitFlutterPlatform.instance
-        .setCameraKitCredentials(apiToken: apiToken);
-  }
-
   /// Asynchronously retrieves group lenses from the CameraKit.
   Future<String?> getGroupLenses({required List<String> groupIds}) {
     return CamerakitFlutterPlatform.instance.getGroupLenses(groupIds: groupIds);

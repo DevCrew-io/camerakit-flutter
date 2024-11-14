@@ -42,5 +42,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>SCCameraKitAPIToken</key>
+	<string>eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjU5NTA4NDI1LCJzdWIiOiI5MTI0MjA0ZC1kNGQxLTQ1MmItODE3NS0wOWRhNWRhNWQ5ZTR-U1RBR0lOR35iZWU4M2ViNy01MDhjLTQwYjItYjc1NS1hMTVlODY0ZTU4ODYifQ.P_cEb6YD-0gKEzSG7LzklIW73gOKC_f_yJ8cF-SkXro</string>
+	<key>SCCameraKitClientID</key>
+	<string>b9f38f31-d7df-4b16-86e2-09a524854f9c</string>
 </dict>
 </plist>

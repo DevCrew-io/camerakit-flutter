@@ -6,7 +6,6 @@ enum InputMethods: InvokeMethods {
     static let GET_GROUP_LENSES = "getGroupLenses"
     static let OPEN_CAMERA_KIT = "openSnapCameraKit"
     static let OPEN_SINGLE_LENS = "openSingleLens"
-    static let SET_CAMERA_KIT_CREDENTIALS = "setCameraKitCredentials"
 }
 
 enum OutputMethods: InvokeMethods {

@@ -11,7 +11,6 @@ class OutputMethods implements InvokeMethods {
   static const openSnapCameraKit = "openSnapCameraKit";
   static const openSingleLens = "openSingleLens";
   static const getGroupLenses = "getGroupLenses";
-  static const setCameraKitCredentials = "setCameraKitCredentials";
 }
 
 class InputMethods implements InvokeMethods {

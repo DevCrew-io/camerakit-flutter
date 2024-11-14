@@ -52,7 +52,7 @@ android {
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation "com.snap.camerakit:support-camera-activity:1.31.0"
+        implementation "com.snap.camerakit:support-camera-activity:1.35.0"
         implementation 'com.google.code.gson:gson:2.8.8' // Use the latest version available
     }
 

@@ -12,7 +12,6 @@ object InputMethods: InvokeMethods {
     const val GET_GROUP_LENSES = "getGroupLenses"
     const val OPEN_CAMERA_KIT = "openSnapCameraKit"
     const val OPEN_SINGLE_LENS = "openSingleLens"
-    const val SET_CAMERA_KIT_CREDENTIALS = "setCameraKitCredentials"
 
 }
 

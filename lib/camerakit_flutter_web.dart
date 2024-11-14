@@ -36,10 +36,4 @@ class CamerakitFlutterWeb extends CamerakitFlutterPlatform {
     // TODO: implement openCameraKitWithSingleLens
     return super.openCameraKitWithSingleLens(lensId: lensId, groupId: groupId);
   }
-
-  @override
-  Future<String?> setCameraKitCredentials({required String apiToken}) {
-    // TODO: implement setCameraKitCredentials
-    return super.setCameraKitCredentials(apiToken: apiToken);
-  }
 }

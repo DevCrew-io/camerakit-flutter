@@ -5,6 +5,8 @@
         android:theme="@style/AppCompat"
         android:icon="@mipmap/ic_launcher">
 
+        <meta-data android:name="com.snap.camerakit.api.token" android:value="eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjU5NTA4NDI1LCJzdWIiOiI5MTI0MjA0ZC1kNGQxLTQ1MmItODE3NS0wOWRhNWRhNWQ5ZTR-U1RBR0lOR35iZWU4M2ViNy01MDhjLTQwYjItYjc1NS1hMTVlODY0ZTU4ODYifQ.P_cEb6YD-0gKEzSG7LzklIW73gOKC_f_yJ8cF-SkXro" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

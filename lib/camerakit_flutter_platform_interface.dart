@@ -47,11 +47,6 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
         'openCameraKitWithSingleLens has not been implemented.');
   }
 
-  Future<String?> setCameraKitCredentials({required String apiToken}) {
-    throw UnimplementedError(
-        'setCameraKitCredentials has not been implemented.');
-  }
-
   Future<String?> getGroupLenses({required List<String> groupIds}) {
     throw UnimplementedError('getGroupLenses has not been implemented.');
   }

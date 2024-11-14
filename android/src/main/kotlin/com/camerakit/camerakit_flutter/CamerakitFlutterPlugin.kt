@@ -35,7 +35,6 @@ import java.io.Closeable
 class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     PluginRegistry.ActivityResultListener {
 
-    private val CHANNEL = "camerakit_flutter"
     private lateinit var context: Context
     private lateinit var activity: Activity
     private lateinit var cameraKitSession: Session
@@ -50,45 +49,27 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     private val cameraKitRequestCode = 200;
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, CHANNEL)
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, Configuration.getInstance().channelName)
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
 
 
     }
 
-    private fun isInvalidApiToken(): Boolean {
-        if( Configuration.getInstance().apiToken.isNullOrBlank() || Configuration.getInstance().apiToken == "your-api-token" ) {
-            Log.d("CameraKit-Flutter", "Your api token is invalid")
-            return true
-        }
-        return false
-    }
-
     /// onMethodCall function handles incoming method calls from Dart and performs actions accordingly.
     /// The 'call' parameter contains information about the method called, and 'result' is used to send back the result.
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            InputMethods.SET_CAMERA_KIT_CREDENTIALS -> {
-                // Handle setting Camera Kit credentials.
-                val arguments: Map<String, Any>? = call.arguments()
-                if (arguments != null) {
-                    // Create a Configuration object from the provided arguments.
-                    Configuration.createFromMap(arguments)
-                }
-            }
-
             InputMethods.OPEN_SINGLE_LENS -> {
                 val arguments: Map<String, Any>? = call.arguments()
                 val lensId = arguments?.get("lensId") as? String ?: ""
                 val groupId = arguments?.get("groupId") as? String ?: ""
                 Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
 
-                if (isInvalidApiToken() || lensId.isNullOrBlank() || groupId.isNullOrBlank()) return
+                if (lensId.isNullOrBlank() || groupId.isNullOrBlank()) return
 
                 val intent = ARCameraActivity.Capture.createIntent(
                     context, CameraActivity.Configuration.WithLens(
-                        cameraKitApiToken = Configuration.getInstance().apiToken,
                         lensId = lensId,
                         lensGroupId = groupId,
                     )
@@ -101,11 +82,10 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val groupIds = arguments?.get("groupIds") as? List<String> ?: emptyList();
                 Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
 
-                if (isInvalidApiToken() || groupIds.isEmpty()) return
+                if (groupIds.isEmpty()) return
 
                 val intent = ARCameraActivity.Capture.createIntent(
                     context, CameraActivity.Configuration.WithLenses(
-                        cameraKitApiToken = Configuration.getInstance().apiToken,
                         lensGroupIds = groupIds.toSet()
                     )
                 )
@@ -117,9 +97,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val groupIds = arguments?.get("groupIds") as? List<String> ?: emptyList();
 
                 // Handle getting group lenses.
-                cameraKitSession = Session(activity) {
-                    apiToken(Configuration.getInstance().apiToken)
-                }
+                cameraKitSession = Session(activity)
                 lensRepositorySubscription = cameraKitSession.lenses.repository.observe(
                     LensesComponent.Repository.QueryCriteria.Available(groupIds.toSet())
                 ) { resultLenses ->
