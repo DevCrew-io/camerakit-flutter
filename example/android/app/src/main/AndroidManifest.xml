@@ -5,6 +5,9 @@
         android:theme="@style/AppCompat"
         android:icon="@mipmap/ic_launcher">
 
+        <meta-data android:name="com.snap.camerakit.app.id" android:value="" />
+        <meta-data android:name="com.snap.camerakit.api.token" android:value="" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

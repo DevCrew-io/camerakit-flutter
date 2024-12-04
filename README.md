@@ -15,6 +15,7 @@ For more information you can read the docs [Android](https://docs.snap.com/camer
 #### CAUTION
 **API Token** is different for **Production** and **Staging** Environment. A watermark will be applied to the camera view when using the Staging API token.
 
+## Configuration 
 Once you have access to the account, locate your **groupIds** and **cameraKitApiToken**.
 
 Now that you have obtained all your credentials, you can use it to initialize the Configuration class in your Flutter application as mentioned in the below section.
@@ -23,11 +24,24 @@ Now that you have obtained all your credentials, you can use it to initialize th
 class Constants {
     /// List of group IDs for Camera Kit
     static const List<String> groupIdList = ['your-group-ids']; // TODO: Fill group IDs here
-    
-    /// The API token for Camera Kit in the staging environment
-    static const cameraKitApiToken = 'your-api-token'; // TODO fill api token staging or production here
 }
 ```
+
+#### Android Setup
+The easiest way to include this, is to define a <meta-data> tag in AndroidManifest.xml with a Camera Kit application ID value under <application> tag:
+
+```dart
+<application ...>
+    <meta-data android:name="com.snap.camerakit.app.id" android:value="" />
+    <meta-data android:name="com.snap.camerakit.api.token" android:value="" />
+</application>
+```
+
+#### iOS Setup
+Add `SCCameraKitClientID` (string), and set it to your application's Snap Kit App ID in your application's `Info.plist` file.
+
+Add `SCCameraKitAPIToken` (string), and set it to your application's API Token in your application's `Info.plist` file.
+
 **Note:** To use production api token, your camerakit app should be approved and live on snapchat developer portal.
 Otherwise the app may cause `unauthorized` exception. [Read more](https://docs.snap.com/camera-kit/app-review/release-app) about submitting app for review
 
@@ -101,19 +115,12 @@ https://github.com/DevCrew-io/camerakit-flutter/assets/136708738/63eb485d-1998-4
 
 
 
-## Set Configuration
-
-You can set camerakit credentials by just calling setCredentials function. Before calling you need instance of CameraKitFlutterImpl, you only need to pass apiToken to configure camerakit flutter package. You don't need to set separate credentials for iOS and Android.
-
-```dart
-late final _cameraKitFlutterImpl = CameraKitFlutterImpl(cameraKitFlutterEvents: this);
-_cameraKitFlutterImpl.setCredentials(apiToken: Constants.cameraKitApiToken);
-```
 ## Access Camerakit in Flutter
 ### Load all lenses
 You can access camerakit by just calling openCameraKit function with only the list of groupIds to load all lenses of given groups.
 You can hide or show close button on camerakit screen by setting isHideCloseButton to true or false respectively.
 ```dart
+late final _cameraKitFlutterImpl = CameraKitFlutterImpl(cameraKitFlutterEvents: this);
 _cameraKitFlutterImpl.openCameraKit(
     groupIds: Constants.groupIdList,
     isHideCloseButton: false,

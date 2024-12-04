@@ -18,30 +18,20 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
-        case InputMethods.SET_CAMERA_KIT_CREDENTIALS:
-            if let arguments = call.arguments as? [String : Any] {
-                Configuration.shared.fromMap(arguments)
-            }
-            
-            guard isValidApiToken() else { return }
-            
-            /// Create CameraKit session for later use e.g fetching lenses with list of group id
-            cameraKitSession = Session(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken), lensesConfig: lensesConfig, errorHandler: nil)
-            
         case InputMethods.GET_GROUP_LENSES:
-            guard isValidApiToken(),
-                  let arguments = call.arguments as? [String : Any]
+            guard let arguments = call.arguments as? [String : Any]
             else { return }
             
             groupLenses = arguments["groupIds"] as? [String] ?? []
+            print(groupLenses)
             lensesDictionary.removeAll()
+            cameraKitSession = Session(lensesConfig: lensesConfig, errorHandler: nil)
             for id in groupLenses {
                 cameraKitSession?.lenses.repository.addObserver(self, groupID: id)
             }
             
         case InputMethods.OPEN_SINGLE_LENS:
-            guard isValidApiToken(),
-                  let arguments = call.arguments as? [String : Any],
+            guard let arguments = call.arguments as? [String : Any],
                   let lensId = arguments["lensId"] as? String,
                   let groupId = arguments["groupId"] as? String,
                   let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
@@ -50,8 +40,7 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
             openCameraKit(groupIds: [groupId], lensId: lensId, isHideCloseButton: isHideCloseButton)
             
         case InputMethods.OPEN_CAMERA_KIT, InputMethods.OPEN_SINGLE_LENS:
-            guard isValidApiToken(),
-                  let arguments = call.arguments as? [String : Any],
+            guard let arguments = call.arguments as? [String : Any],
                   let groupIds = arguments["groupIds"] as? [String],
                   let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
             else { return }
@@ -64,17 +53,8 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
         
     }
     
-    private func isValidApiToken() -> Bool {
-        guard !Configuration.shared.apiToken.isEmpty && Configuration.shared.apiToken != "your-api-token" else {
-            print("CameraKit: Invalid Api Token")
-            return false
-        }
-        
-        return true
-    }
-    
     private func openCameraKit(groupIds: [String], lensId: String = "", isHideCloseButton: Bool = false) {
-        var cameraController : CameraController? = CameraController(sessionConfig: SessionConfig(apiToken: Configuration.shared.apiToken))
+        var cameraController : CameraController? = CameraController()
         cameraController?.groupIDs = groupIds
         
         var cameraViewController : FlutterCameraViewController? = FlutterCameraViewController(cameraController: cameraController!)
@@ -135,6 +115,7 @@ extension CamerakitFlutterPlugin: LensRepositoryGroupObserver {
         }
 
         let jsonString = resultDict.toJSONString()
+        cameraKitSession = nil
         getChannel()?.invokeMethod(OutputMethods.RECEIVED_LENSES, arguments: jsonString)
     }
     

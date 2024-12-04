@@ -5,7 +5,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'camerakit_flutter'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'A camerakit plugin that provides developers with seamless integration and access to Snapchat\'s CameraKit features within their Flutter applications.'
   s.description      = <<-DESC
         An open-source SDK package for Flutter that provides developers with seamless integration and access to Snapchat CameraKit features within their Flutter applications. Flutter developers now can access set configuration from Flutter for both platforms (IOS and Android), you can open CameraKit , get media results (Images and Videos) and get list of lenses against group Ids.
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  s.dependency 'SCCameraKit', '~> 1.31.0'
-  s.dependency 'SCCameraKitReferenceUI', '~> 1.31.0'
+  s.dependency 'SCCameraKit', '~> 1.36.0'
+  s.dependency 'SCCameraKitReferenceUI', '~> 1.36.0'
 
 end

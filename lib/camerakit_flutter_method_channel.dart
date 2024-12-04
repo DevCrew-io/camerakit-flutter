@@ -50,13 +50,6 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   }
 
   @override
-  Future<String?> setCameraKitCredentials({required String apiToken}) {
-    final Map<String, dynamic> arguments = {'token': apiToken};
-    return methodChannel.invokeMethod<String>(
-        OutputMethods.setCameraKitCredentials, arguments);
-  }
-
-  @override
   Future<String?> getGroupLenses({required List<String> groupIds}) {
     final Map<String, dynamic> arguments = {'groupIds': groupIds};
     // Invoke the native method to retrieve group lenses from the CameraKit.

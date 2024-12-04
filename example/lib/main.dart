@@ -34,8 +34,6 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   @override
   void initState() {
     super.initState();
-
-    _cameraKitFlutterImpl.setCredentials(apiToken: Constants.cameraKitApiToken);
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.

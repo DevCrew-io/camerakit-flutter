@@ -7,22 +7,18 @@ package com.camerakit.camerakit_flutter
 //  Copyright © 2023 DevCrew I/O
 //
 class Configuration private constructor(
-    val apiToken: String,
-    var isHideCloseButton: Boolean
+    var channelName: String = "camerakit_flutter",
+    var isHideCloseButton: Boolean = false
 ) {
 
     companion object {
         private var instance: Configuration? = null
 
-        fun getInstance() = instance
-            ?: throw IllegalStateException("please set configuration with Configuration.createFromMap(...) method")
+        fun getInstance(): Configuration {
+            if (instance == null) {
+                instance = Configuration()
+            }
 
-
-        fun createFromMap(arguments: Map<String, Any>): Configuration {
-            instance = Configuration(
-                apiToken = arguments["token"] as? String ?: "",
-                isHideCloseButton = false,
-            )
             return instance!!
         }
     }
