@@ -1,5 +1,9 @@
 ## 1.0.2
 ### Updated
+* Update Camera kit SDK to 1.37.0
+
+## 1.0.2
+### Updated
 * Update Camera kit SDK to 1.36.0
 * Configuration setup is updated as per new snapchat version.
 
