@@ -1,6 +1,7 @@
 ## 1.0.4
 ### Updated
 * Update CameraKit SDK to 1.38.0
+* Update Example project.
 
 ## 1.0.3
 ### Updated
