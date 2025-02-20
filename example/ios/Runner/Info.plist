@@ -45,9 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-		<key>SCCameraKitAPIToken</key>
-    	<string></string>
-    	<key>SCCameraKitClientID</key>
-    	<string></string>
+	<key>NSCameraUsageDescription</key>
+	<string>Use to load lens.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Use to record voice.</string>
+	<key>SCCameraKitAPIToken</key>
+	<string></string>
+	<key>SCCameraKitClientID</key>
+	<string></string>
 </dict>
 </plist>
