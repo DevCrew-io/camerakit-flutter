@@ -1,6 +1,6 @@
 # camerakit_flutter_example
 
-Demonstrates how to use the camerakit_flutter plugin.
+A new Flutter project.
 
 ## Getting Started
 
