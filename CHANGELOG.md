@@ -1,14 +1,19 @@
+## 1.0.4
+### Updated
+* Update CameraKit SDK to 1.38.0
+* Update Example project.
+
 ## 1.0.3
 ### Updated
-* Update Camera kit SDK to 1.37.0
+* Update CameraKit SDK to 1.37.0
 
 ## 1.0.2
 ### Updated
-* Update Camera kit SDK to 1.36.0
+* Update CameraKit SDK to 1.36.0
 * Configuration setup is updated as per new snapchat version.
 
 ## 1.0.1
-* Update Camera kit SDK to 1.31.0
+* Update CameraKit SDK to 1.31.0
 
 ## 1.0.0
 * Fix dart formatting warnings for pub points.

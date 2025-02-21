@@ -1,6 +1,6 @@
 name: camerakit_flutter
 description: A camerakit plugin that provides developers with seamless integration and access to Snapchat CameraKit features within their Flutter applications.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/DevCrew-io/camerakit-flutter#readme
 repository: https://github.com/DevCrew-io/camerakit-flutter
 issue_tracker: https://github.com/DevCrew-io/camerakit-flutter/issues
@@ -19,7 +19,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
