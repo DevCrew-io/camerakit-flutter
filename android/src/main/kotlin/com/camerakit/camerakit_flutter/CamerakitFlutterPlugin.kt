@@ -145,6 +145,8 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        lensRepositorySubscription?.close()
+        cameraKitSession.close()
         channel.setMethodCallHandler(null)
     }
 
@@ -156,7 +158,7 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     }
 
     override fun onDetachedFromActivity() {
-        TODO("Not yet implemented")
+        cameraKitSession.close()
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
@@ -184,4 +186,5 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         return false
 
     }
+
 }
