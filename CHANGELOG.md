@@ -1,6 +1,11 @@
+## 1.0.6
+### Updated
+* Update CameraKit SDK to 1.40.0
+
 ## 1.0.5
 ### Updated
 * Update CameraKit SDK to 1.39.0
+* CameraKit Session expire on activity de-attached event (Android).
 
 ## 1.0.4
 ### Updated
