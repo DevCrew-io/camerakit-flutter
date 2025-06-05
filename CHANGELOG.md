@@ -1,3 +1,10 @@
+## 1.0.7
+### Updated
+* Bug Fixes
+* Update Example Project
+* Handle Camera & Mic Permission
+* Release Audio Session On Lens Close.
+
 ## 1.0.6
 ### Updated
 * Update CameraKit SDK to 1.40.0
