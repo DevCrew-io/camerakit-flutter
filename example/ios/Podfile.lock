@@ -1,5 +1,5 @@
 PODS:
-  - camerakit_flutter (1.0.6):
+  - camerakit_flutter (1.0.7):
     - Flutter
     - SCCameraKit (~> 1.40.0)
     - SCCameraKitReferenceUI (~> 1.40.0)
@@ -30,12 +30,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
 
 SPEC CHECKSUMS:
-  camerakit_flutter: ba8e3a9e141fff3adcb71f7dc87143f31aa93d5b
+  camerakit_flutter: 9f14f3d9dc68fdd23bdad38282e8c6e0338545ea
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   SCCameraKit: 3df78d50b972282517fd1c0c69f4a01d301ef4e6
   SCCameraKitReferenceUI: 737630ab0ccab689a3492585aeb349fe6ffa21cc
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
 
-PODFILE CHECKSUM: e30f02f9d1c72c47bb6344a0a748c9d268180865
+PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
