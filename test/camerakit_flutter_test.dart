@@ -9,7 +9,6 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockCamerakitFlutterPlatform
     with MockPlatformInterfaceMixin
     implements CamerakitFlutterPlatform {
-
   @override
   MethodChannel getMethodChannel() {
     // TODO: implement getMethodChannel
@@ -17,13 +16,22 @@ class MockCamerakitFlutterPlatform
   }
 
   @override
-  Future<String?> openCameraKit({required List<String> groupIds, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKit({
+    required List<String> groupIds,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     // TODO: implement openCameraKit
     throw UnimplementedError();
   }
 
   @override
-  Future<String?> openCameraKitWithSingleLens({required String lensId, required String groupId, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKitWithSingleLens({
+    required String lensId,
+    required String groupId,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     // TODO: implement openCameraKitWithSingleLens
     throw UnimplementedError();
   }

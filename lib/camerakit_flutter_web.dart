@@ -22,18 +22,21 @@ class CamerakitFlutterWeb extends CamerakitFlutterPlatform {
   // }
 
   @override
-  Future<String?> openCameraKit(
-      {required List<String> groupIds, bool isHideCloseButton = false}) {
-    // TODO: implement openCameraKit
+  Future<String?> openCameraKit({
+    required List<String> groupIds,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     return super.openCameraKit(groupIds: groupIds);
   }
 
   @override
-  Future<String?> openCameraKitWithSingleLens(
-      {required String lensId,
-      required String groupId,
-      bool isHideCloseButton = false}) {
-    // TODO: implement openCameraKitWithSingleLens
+  Future<String?> openCameraKitWithSingleLens({
+    required String lensId,
+    required String groupId,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     return super.openCameraKitWithSingleLens(lensId: lensId, groupId: groupId);
   }
 }

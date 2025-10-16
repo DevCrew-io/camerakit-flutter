@@ -9,6 +9,11 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'camerakit_flutter_method_channel.dart';
 
+enum CameraPosition {
+  front,
+  back,
+}
+
 abstract class CamerakitFlutterPlatform extends PlatformInterface {
   /// Constructs a CamerakitFlutterPlatform.
   CamerakitFlutterPlatform() : super(token: _token);
@@ -34,15 +39,20 @@ abstract class CamerakitFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('getMethodChannel has not been implemented.');
   }
 
-  Future<String?> openCameraKit(
-      {required List<String> groupIds, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKit({
+    required List<String> groupIds,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     throw UnimplementedError('openCameraKit has not been implemented.');
   }
 
-  Future<String?> openCameraKitWithSingleLens(
-      {required String lensId,
-      required String groupId,
-      bool isHideCloseButton = false}) {
+  Future<String?> openCameraKitWithSingleLens({
+    required String lensId,
+    required String groupId,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     throw UnimplementedError(
         'openCameraKitWithSingleLens has not been implemented.');
   }

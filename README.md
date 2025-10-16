@@ -124,6 +124,7 @@ late final _cameraKitFlutterImpl = CameraKitFlutterImpl(cameraKitFlutterEvents: 
 _cameraKitFlutterImpl.openCameraKit(
     groupIds: Constants.groupIdList,
     isHideCloseButton: false,
+    cameraPosition: CameraPosition.back,
 );
 ```
 ### Load single lens
@@ -134,6 +135,7 @@ _cameraKitFlutterImpl.openCameraKitWithSingleLens(
     lensId: lensId!,
     groupId: groupId!,
     isHideCloseButton: false,
+    cameraPosition: CameraPosition.back,
 );
 ```
 ## Get group lenses
