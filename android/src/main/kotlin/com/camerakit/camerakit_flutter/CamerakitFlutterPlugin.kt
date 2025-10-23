@@ -64,31 +64,35 @@ class CamerakitFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val arguments: Map<String, Any>? = call.arguments()
                 val lensId = arguments?.get("lensId") as? String ?: ""
                 val groupId = arguments?.get("groupId") as? String ?: ""
+                val cameraPosition = arguments?.get("cameraPosition") as? String ?: ""
                 Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
 
                 if (lensId.isNullOrBlank() || groupId.isNullOrBlank()) return
 
-                val intent = ARCameraActivity.Capture.createIntent(
-                    context, CameraActivity.Configuration.WithLens(
-                        lensId = lensId,
-                        lensGroupId = groupId,
-                    )
+                val config = CameraActivity.Configuration.WithLens(
+                    lensId = lensId,
+                    lensGroupId = groupId,
+                    cameraFacingFront = cameraPosition == "front"
                 )
+
+                val intent = ARCameraActivity.Capture.createIntent(context, config)
                 activity.startActivityForResult(intent, cameraKitRequestCode)
             }
 
             InputMethods.OPEN_CAMERA_KIT -> {
                 val arguments: Map<String, Any>? = call.arguments()
                 val groupIds = arguments?.get("groupIds") as? List<String> ?: emptyList();
+                val cameraPosition = arguments?.get("cameraPosition") as? String ?: ""
                 Configuration.getInstance().isHideCloseButton = arguments?.get("isHideCloseButton") as? Boolean ?: false
 
                 if (groupIds.isEmpty()) return
 
-                val intent = ARCameraActivity.Capture.createIntent(
-                    context, CameraActivity.Configuration.WithLenses(
-                        lensGroupIds = groupIds.toSet()
-                    )
+                val config = CameraActivity.Configuration.WithLenses(
+                    lensGroupIds = groupIds.toSet(),
+                    cameraFacingFront = cameraPosition == "front"
                 )
+
+                val intent = ARCameraActivity.Capture.createIntent(context, config)
                 activity.startActivityForResult(intent, cameraKitRequestCode)
             }
 
