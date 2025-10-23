@@ -1,7 +1,8 @@
 ## 1.0.8
 ### Updated
 * Bug Fixes
-* Update CameraKit SDK to 1.43.0
+* Update CameraKit SDK to 1.44.0
+* Lens Studio 5.15 support
 ### Added
 * (Optional) Choose which camera to open on load. Defaults to the preferred lens facing.
 
