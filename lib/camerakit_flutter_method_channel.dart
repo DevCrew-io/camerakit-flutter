@@ -23,27 +23,41 @@ class MethodChannelCamerakitFlutter extends CamerakitFlutterPlatform {
   }
 
   @override
-  Future<String?> openCameraKit(
-      {required List<String> groupIds, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKit({
+    required List<String> groupIds,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     final Map<String, dynamic> arguments = {
       'groupIds': groupIds,
       'isHideCloseButton': isHideCloseButton
     };
+
+    if (cameraPosition != null) {
+      arguments['cameraPosition'] = cameraPosition.name;
+    }
+
     // Invoke the native method to open the CameraKit.
     return methodChannel.invokeMethod<String>(
         OutputMethods.openSnapCameraKit, arguments);
   }
 
   @override
-  Future<String?> openCameraKitWithSingleLens(
-      {required String lensId,
-      required String groupId,
-      bool isHideCloseButton = false}) {
+  Future<String?> openCameraKitWithSingleLens({
+    required String lensId,
+    required String groupId,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     final Map<String, dynamic> arguments = {
       'lensId': lensId,
       'groupId': groupId,
-      'isHideCloseButton': isHideCloseButton
+      'isHideCloseButton': isHideCloseButton,
     };
+
+    if (cameraPosition != null) {
+      arguments['cameraPosition'] = cameraPosition.name;
+    }
     // Invoke the native method to open the CameraKit with single lens.
     return methodChannel.invokeMethod<String>(
         OutputMethods.openSingleLens, arguments);

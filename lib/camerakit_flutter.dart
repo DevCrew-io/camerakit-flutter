@@ -43,19 +43,31 @@ class CameraKitFlutterImpl {
   }
 
   /// Asynchronously opens the CameraKit.
-  Future<String?> openCameraKit(
-      {required List<String> groupIds, bool isHideCloseButton = false}) {
+  Future<String?> openCameraKit({
+    required List<String> groupIds,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     return CamerakitFlutterPlatform.instance.openCameraKit(
-        groupIds: groupIds, isHideCloseButton: isHideCloseButton);
+      groupIds: groupIds,
+      isHideCloseButton: isHideCloseButton,
+      cameraPosition: cameraPosition,
+    );
   }
 
   /// Asynchronously opens the CameraKit with single lens.
-  Future<String?> openCameraKitWithSingleLens(
-      {required String lensId,
-      required String groupId,
-      bool isHideCloseButton = false}) {
+  Future<String?> openCameraKitWithSingleLens({
+    required String lensId,
+    required String groupId,
+    bool isHideCloseButton = false,
+    CameraPosition? cameraPosition,
+  }) {
     return CamerakitFlutterPlatform.instance.openCameraKitWithSingleLens(
-        lensId: lensId, groupId: groupId, isHideCloseButton: isHideCloseButton);
+      lensId: lensId,
+      groupId: groupId,
+      isHideCloseButton: isHideCloseButton,
+      cameraPosition: cameraPosition,
+    );
   }
 
   /// Asynchronously retrieves group lenses from the CameraKit.

@@ -16,6 +16,34 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
     var groupLenses = [String]()
     var lensesDictionary = [String : [Lens]]()
     
+    private static func currentRootViewController() -> UIViewController? {
+        // Prefer the key window from any active foreground scene
+        let activeScenes = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .filter { [.foregroundActive, .foregroundInactive].contains($0.activationState) }
+        
+        for scene in activeScenes {
+            if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
+                return keyWindow.rootViewController
+            }
+            if let window = scene.windows.first {
+                return window.rootViewController
+            }
+        }
+        
+        // Fallback: check any scene/window if none are active
+        for case let scene as UIWindowScene in UIApplication.shared.connectedScenes {
+            if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
+                return keyWindow.rootViewController
+            }
+            if let window = scene.windows.first {
+                return window.rootViewController
+            }
+        }
+        
+        return nil
+    }
+    
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case InputMethods.GET_GROUP_LENSES:
@@ -37,15 +65,27 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
                   let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
             else { return }
             
-            openCameraKit(groupIds: [groupId], lensId: lensId, isHideCloseButton: isHideCloseButton)
             
-        case InputMethods.OPEN_CAMERA_KIT, InputMethods.OPEN_SINGLE_LENS:
+            let cameraPosition = arguments["cameraPosition"] as? String
+            openCameraKit(
+                groupIds: [groupId],
+                lensId: lensId,
+                isHideCloseButton: isHideCloseButton,
+                cameraPosition: cameraPosition
+            )
+            
+        case InputMethods.OPEN_CAMERA_KIT:
             guard let arguments = call.arguments as? [String : Any],
                   let groupIds = arguments["groupIds"] as? [String],
                   let isHideCloseButton = arguments["isHideCloseButton"] as? Bool
             else { return }
             
-            openCameraKit(groupIds: groupIds, isHideCloseButton: isHideCloseButton)
+            let cameraPosition = arguments["cameraPosition"] as? String
+            openCameraKit(
+                groupIds: groupIds,
+                isHideCloseButton: isHideCloseButton,
+                cameraPosition: cameraPosition
+            )
             
         default:
             result(FlutterMethodNotImplemented)
@@ -53,41 +93,58 @@ public class CamerakitFlutterPlugin: NSObject, FlutterPlugin {
         
     }
     
-    private func openCameraKit(groupIds: [String], lensId: String = "", isHideCloseButton: Bool = false) {
-        var cameraController : CameraController? = CameraController()
-        cameraController?.groupIDs = groupIds
-        
-        var cameraViewController : FlutterCameraViewController? = FlutterCameraViewController(cameraController: cameraController!)
-        cameraViewController?.lensId = lensId
-        cameraViewController?.isHideCloseButton = isHideCloseButton
-        cameraViewController?.modalPresentationStyle = .fullScreen
-        cameraViewController?.onDismiss = { [weak self] in
-            guard let lastPath = cameraViewController?.url?.path,
-                  let mimeType = cameraViewController?.mimeType
-            else {
-                cameraController = nil
-                cameraViewController = nil
-                print("Something went wrong, Received invalid url")
-                return
+    private func openCameraKit(groupIds: [String], lensId: String = "", isHideCloseButton: Bool = false, cameraPosition: String? = nil) {
+        DispatchQueue.main.async { [weak self] in
+            var cameraController: CameraController? = CameraController()
+            cameraController?.groupIDs = groupIds
+            
+            guard let cameraControllerUnwrapped = cameraController else { return }
+            var cameraViewController: FlutterCameraViewController? = FlutterCameraViewController(cameraController: cameraControllerUnwrapped)
+            cameraViewController?.lensId = lensId
+            cameraViewController?.isHideCloseButton = isHideCloseButton
+            
+            if let position = cameraPosition {
+                cameraViewController?.cameraPosition = position == "back" ? .back : .front
             }
             
-            cameraController = nil
-            cameraViewController = nil
-            self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
-                "path" : lastPath,
-                "type" : mimeType
-            ])
+            cameraViewController?.modalPresentationStyle = .fullScreen
+            cameraViewController?.onDismiss = { [weak self] in
+                guard let lastPath = cameraViewController?.url?.path,
+                      let mimeType = cameraViewController?.mimeType else {
+                    cameraController = nil
+                    cameraViewController = nil
+                    print("Something went wrong, Received invalid url")
+                    return
+                }
+                
+                cameraController = nil
+                cameraViewController = nil
+                self?.getChannel()?.invokeMethod(OutputMethods.CAMERA_KIT_RESULTS, arguments: [
+                    "path": lastPath,
+                    "type": mimeType
+                ])
+            }
+            
+            guard let rootViewController = Self.currentRootViewController() as? FlutterViewController,
+                  let cameraVC = cameraViewController else { return }
+            rootViewController.present(cameraVC, animated: false)
         }
-        
-        let rootViewController = (UIApplication.shared.windows.first?.rootViewController as! FlutterViewController)
-        rootViewController.present(cameraViewController!, animated: false)
     }
     
     private func getChannel() -> FlutterMethodChannel? {
-        guard let contoller = UIApplication.shared.windows.first?.rootViewController as? FlutterViewController else {
-            return nil
+        var channel: FlutterMethodChannel?
+        let work = {
+            if let controller = Self.currentRootViewController() as? FlutterViewController {
+                channel = FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: controller.binaryMessenger)
+            }
         }
-        return FlutterMethodChannel(name: Configuration.shared.channelName, binaryMessenger: contoller.binaryMessenger)
+        
+        if Thread.isMainThread {
+            work()
+        } else {
+            DispatchQueue.main.sync { work() }
+        }
+        return channel
     }
 }
 
@@ -113,7 +170,7 @@ extension CamerakitFlutterPlugin: LensRepositoryGroupObserver {
                 "thumbnail" : [lens.iconUrl?.absoluteString ?? ""]
             ] as [String : Any]
         }
-
+        
         let jsonString = resultDict.toJSONString()
         cameraKitSession = nil
         getChannel()?.invokeMethod(OutputMethods.RECEIVED_LENSES, arguments: jsonString)
@@ -123,3 +180,4 @@ extension CamerakitFlutterPlugin: LensRepositoryGroupObserver {
         print(error?.localizedDescription ?? "")
     }
 }
+

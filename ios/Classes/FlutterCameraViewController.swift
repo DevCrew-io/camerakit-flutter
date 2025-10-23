@@ -69,6 +69,7 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
     public var cameraView: CameraView? = CameraView()
     public var isHideCloseButton: Bool = false
     public var lensId: String = ""
+    public var cameraPosition: AVCaptureDevice.Position?
     
     override open func loadView() {
         view = cameraView
@@ -179,6 +180,9 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
                 print("\(lens.name ?? "Unnamed") (\(lens.id)) Applied")
                 
                 DispatchQueue.main.async {
+                    
+                    strongSelf.updateCameraPositionIfNeeded()
+                    
                     strongSelf.hideAllHints()
                     strongSelf.showMessage(lens: lens)
                     strongSelf.cameraView?.cameraBottomBar.closeButton.isHidden = false
@@ -218,6 +222,8 @@ open class FlutterCameraViewController: UIViewController, CameraControllerUIDele
             }
             
             lensId = ""
+        } else {
+            updateCameraPositionIfNeeded()
         }
         
         cameraView?.carouselView.reloadData()
@@ -624,6 +630,11 @@ extension FlutterCameraViewController: CarouselViewDelegate, CarouselViewDataSou
 import UIKit
 
 extension FlutterCameraViewController: CameraButtonDelegate {
+    private func updateCameraPositionIfNeeded() {
+        if let cameraPosition = cameraPosition, cameraPosition != cameraController?.cameraPosition {
+            flip(sender: UIView())
+        }
+    }
     public func cameraButtonTapped(_ cameraButton: CameraButton) {
         print("Camera button tapped")
         cameraController?.takePhoto { image, error in

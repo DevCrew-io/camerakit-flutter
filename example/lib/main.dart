@@ -1,3 +1,4 @@
+import 'package:camerakit_flutter/camerakit_flutter_platform_interface.dart';
 import 'package:camerakit_flutter_example/media_result_screen.dart';
 import 'package:camerakit_flutter_example/lens_list_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -9,9 +10,7 @@ import 'package:camerakit_flutter/lens_model.dart';
 import 'constants.dart';
 
 void main() {
-  runApp(const MaterialApp(
-    home: MyApp(),
-  ));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -27,8 +26,9 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   late String _filePath = '';
   late String _fileType = '';
   late List<Lens> lensList = [];
-  late final _cameraKitFlutterImpl =
-      CameraKitFlutterImpl(cameraKitFlutterEvents: this);
+  late final _cameraKitFlutterImpl = CameraKitFlutterImpl(
+    cameraKitFlutterEvents: this,
+  );
   bool isLensListPressed = false;
 
   @override
@@ -42,7 +42,10 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
     // We also handle the message potentially returning null.
     try {
       await _cameraKitFlutterImpl.openCameraKit(
-          groupIds: Constants.groupIdList, isHideCloseButton: false);
+        groupIds: Constants.groupIdList,
+        isHideCloseButton: false,
+        cameraPosition: CameraPosition.back, // (Optional) Choose which camera to open on load. Defaults to the preferred lens facing.
+      );
     } on PlatformException {
       if (kDebugMode) {
         print("Failed to open camera kit");
@@ -66,27 +69,27 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Camera Kit'),
-      ),
+      appBar: AppBar(title: const Text('Camera Kit')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ElevatedButton(
-                onPressed: () {
-                  isLensListPressed = true;
-                  setState(() {});
-                  getGroupLenses();
-                },
-                child: const Text("Show Lens List")),
+              onPressed: () {
+                isLensListPressed = true;
+                setState(() {});
+                getGroupLenses();
+              },
+              child: const Text("Show Lens List"),
+            ),
             ElevatedButton(
-                onPressed: () {
-                  initCameraKit();
-                },
-                child: const Text("Open CameraKit")),
-            isLensListPressed ? const CircularProgressIndicator() : Container()
+              onPressed: () {
+                initCameraKit();
+              },
+              child: const Text("Open CameraKit"),
+            ),
+            isLensListPressed ? const CircularProgressIndicator() : Container(),
           ],
         ),
       ),
@@ -99,11 +102,13 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
       _filePath = result["path"] as String;
       _fileType = result["type"] as String;
 
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MediaResultWidget(
-                filePath: _filePath,
-                fileType: _fileType,
-              )));
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  MediaResultWidget(filePath: _filePath, fileType: _fileType),
+        ),
+      );
     });
   }
 
@@ -111,15 +116,23 @@ class _MyAppState extends State<MyApp> implements CameraKitFlutterEvents {
   void receivedLenses(List<Lens> lensList) async {
     isLensListPressed = false;
     setState(() {});
-    final result = await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => LensListView(lensList: lensList)))
-        as Map<String, dynamic>?;
+    final result =
+        await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LensListView(lensList: lensList),
+              ),
+            )
+            as Map<String, dynamic>?;
     final lensId = result?['lensId'] as String?;
     final groupId = result?['groupId'] as String?;
 
     if ((lensId?.isNotEmpty ?? false) && (groupId?.isNotEmpty ?? false)) {
       _cameraKitFlutterImpl.openCameraKitWithSingleLens(
-          lensId: lensId!, groupId: groupId!, isHideCloseButton: false);
+        lensId: lensId!,
+        groupId: groupId!,
+        isHideCloseButton: false,
+        cameraPosition: CameraPosition.back, // (Optional) Choose which camera to open on load. Defaults to the preferred lens facing.
+      );
     }
   }
 }
